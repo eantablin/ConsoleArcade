@@ -1,14 +1,16 @@
 import sys
 import os
-import console, sound 
+# import console, sound 
 from random import randint # Used for eightBall
 
 
 # Shorthand functions 
-cls = lambda: console.clear() # Clear console
-peasantSound = lambda: sound.play_effect('8ve:8ve-beep-timber') # Peasant's signature sound
-nobleSound = lambda: sound.play_effect('game:Woosh_1') # Nobleman's signature sound
-royalSound = lambda: sound.play_effect('game:Ding_3') # Royalty's signature sound
+# cls = lambda: console.clear() # Clear console
+def cls():
+    os.system('clear')
+# peasantSound = lambda: sound.play_effect('8ve:8ve-beep-timber') # Peasant's signature sound
+# nobleSound = lambda: sound.play_effect('game:Woosh_1') # Nobleman's signature sound
+# royalSound = lambda: sound.play_effect('game:Ding_3') # Royalty's signature sound
 easyaddition = lambda: print("Hello World")
 
 class Player():
@@ -26,7 +28,7 @@ class Player():
 	def classChoice(self, choice): # Initial class choice
 
 		if choice == 1: # Peasant
-			peasantSound()
+			# peasantSound()
 			self.level = 1
 			self.health = 60
 			self.currentHP = self.health
@@ -37,7 +39,7 @@ class Player():
 			self.className = "Peasant"
 			# Total = 140
 		elif choice == 2: # Nobleman
-			nobleSound()
+			# nobleSound()
 			self.level = 1
 			self.health = 100
 			self.currentHP = self.health
@@ -48,7 +50,7 @@ class Player():
 			self.className = "Nobleman"
 			# Total = 155
 		elif choice == 3: # Royalty
-			royalSound()
+			# royalSound()
 			self.level = 1
 			self.health = 100
 			self.currentHP = self.health
@@ -87,7 +89,7 @@ class Player():
 				self.setMana(self.getMana() + 10)
 				# Total = 15
 
-			sound.play_effect('arcade:Powerup_1')
+			# sound.play_effect('arcade:Powerup_1')
 			self.level += 1 # Base upgrade
 			self.currentHP = self.health # Reset HP to max // Free heal
 			totalXP -= 100
@@ -198,7 +200,15 @@ class Enemy():
 			self.DMG = 15
 			self.Type = "Ogre"
 
-
+class Color():
+	PURPLE = '\033[95m'
+	CYAN = '\033[96m'
+	DARKCYAN = '\033[36m'
+	BLUE = '\033[94m'
+	RED = '\033[91m'
+	BOLD = '\033[1m'
+	UNDERLINE = '\033[4m'
+	END = '\033[0m'
 	
 class RPGame():
 	
@@ -208,7 +218,7 @@ class RPGame():
 		
 		# Game setup
 		cls()
-		sound.play_effect('game:Click_1')
+		# sound.play_effect('game:Click_1')
 		self.characterChoice(player)
 		
 		while self.isAlive == True:
@@ -222,14 +232,14 @@ class RPGame():
 		
 		while self.isAlive == True: # While user hasn't decided to exit
 			cls()
-			userChoice = int(input("Pick a class\n\n1. Peasant\n2. Nobleman\n3. Royalty\n0. Exit"))
+			userChoice = int(input(Color.DARKCYAN + "Pick a class\n\n1. Peasant\n2. Nobleman\n3. Royalty\n0. Exit\n" + Color.END))
 			
 			if userChoice == 1: # User might pick to be a peasant
 				cls()
-				peasantSound()
+				# peasantSound()
 
-				print("Due to years of backbreaking work, Caldria's peasants are known to have a high tolerance for even the most grueling of tasks.\n\n")
-				classChoice = int(input("Is this your class?\n1. Yes, I'm a Peasant\n0. No, let me check others"))
+				print(Color.RED + "Due to years of backbreaking work, Caldria's peasants are known to have a high tolerance for even the most grueling of tasks.\n\n" + Color.END)
+				classChoice = int(input(Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Peasant\n0. No, let me check others\n" + Color.END))
 				
 				if classChoice == 1:
 					player.classChoice(userChoice)
@@ -237,10 +247,10 @@ class RPGame():
 
 			elif userChoice == 2: # User might choose a nobleman
 				cls()
-				nobleSound()
+				# nobleSound()
 
-				print("Born to a strong house with servants aplenty, the Caldrian noblemen are considered chivalrous and known to be healthy.\n\n")
-				classChoice = int(input("Is this your class?\n1. Yes, I'm a Nobleman\n0. No, let me check others"))
+				print(Color.BLUE + "Born to a strong house with servants aplenty, the Caldrian noblemen are considered chivalrous and known to be healthy.\n\n" + Color.END)
+				classChoice = int(input(Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Nobleman\n0. No, let me check others\n" + Color.END))
 				
 				if classChoice == 1:
 					player.classChoice(userChoice)
@@ -248,10 +258,10 @@ class RPGame():
 			
 			elif userChoice == 3: # Perhaps user went for royalty
 				cls()
-				royalSound()
+				# royalSound()
 
-				print("Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n")
-				classChoice = int(input("Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others"))
+				print(Color.PURPLE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + Color.END)
+				classChoice = int(input(Color.DARKCYAN + "Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others\n" + Color.END))
 				
 				if classChoice == 1:
 					player.classChoice(userChoice)
@@ -268,7 +278,7 @@ class RPGame():
 		
 		while self.isAlive == True:
 			self.displayStats(player)
-			userChoice = int(input('1. Explore\n2. Inventory\n3. Stats\n0. Exit'))
+			userChoice = int(input(Color.DARKCYAN + '1. Explore\n2. Inventory\n3. Stats\n0. Exit\n' + Color.END))
 			cls()
 			
 			if userChoice == 1: # Explore
@@ -297,19 +307,19 @@ class RPGame():
 
 
 			elif userChoice == 2: # Inventory
-				print('No items collected')
+				print(Color.DARKCYAN + 'No items collected' + Color.END)
 			elif userChoice == 3: # Player stats
 				playerHP = player.getHP()
 				if playerHP >= 75:
-					print("I'll be fine")
+					print(Color.DARKCYAN + "I'll be fine" + Color.END)
 				elif playerHP >= 50 and playerHP < 75:
-					print("Some cuts and bruises, I'm otherwise okay")
+					print(Color.DARKCYAN + "Some cuts and bruises, I'm otherwise okay" + Color.END)
 				elif playerHP >= 25 and playerHP < 50:
-					print("I'll need healing soon")
+					print(Color.DARKCYAN + "I'll need healing soon" + Color.END)
 				elif playerHP >= 1 and playerHP < 25:
-					print("Need healing, I might not make it")
+					print(Color.DARKCYAN + "Need healing, I might not make it" + Color.END)
 				else:
-					print("I could use some healing")
+					print(Color.DARKCYAN + "I could use some healing" + Color.END)
 			elif userChoice == 0: # Exit game
 				self.isAlive = False
 
@@ -329,7 +339,7 @@ class RPGame():
 
 			cls()
 			self.displayCombatStats(player, combatMP)
-			userChoice = input(f"{opponent.Type}: You'll be a nice meal\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n0. Exit")
+			userChoice = input(Color.RED + f"{opponent.Type}: You'll be a nice meal\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n0. Exit\n" + Color.END)
 
 			if userChoice == 1:
 				combatEnergy -= 10
@@ -348,13 +358,13 @@ class RPGame():
 
 
 	def displayCombatStats(self, player, mana): # Keep track of current combat stats
-		print(f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {mana}/{player.getMana()}\n')
+		print(Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {mana}/{player.getMana()}\n' + Color.END)
 	
 	def displayStats(self, player): # For most menus
-		print(f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\n')
+		print(Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\n' + Color.END)
 	
 	def displayFullStats(self, player): # For when user wants/needs to see their total stats
-		print(f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n')
+		print(Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n' + Color.END)
 		
 	def displayInventory(self, player):
 		return
@@ -367,7 +377,7 @@ class EightBall():
 	def runGame(self):
 		cls()
 		userChoice = 1
-		sound.play_effect('casino:DieThrow3')
+		# sound.play_effect('casino:DieThrow3')
 		
 		# While user doesnt wanna leave
 		while userChoice != 0:
@@ -377,7 +387,7 @@ class EightBall():
 			cls()
 			
 			if userChoice == 1:
-				sound.play_effect('casino:DieShuffle3')
+				# sound.play_effect('casino:DieShuffle3')
 				self.rollBall()
 			
 	def rollBall(self):
@@ -407,7 +417,7 @@ def main():
 	while isAlive == True:
 	
 		cls()
-		sound.play_effect('digital:HighDown')
+		# sound.play_effect('digital:HighDown')
 		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. Load Save -- TBD\n0. Exit")
 		gameChoice = int(input())
 		
