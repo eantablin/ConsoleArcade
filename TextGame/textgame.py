@@ -1,16 +1,15 @@
 import sys
 import os
-# import console, sound 
+## import console, sound 
 from random import randint # Used for eightBall
 
 
 # Shorthand functions 
-# cls = lambda: console.clear() # Clear console
-def cls():
-    os.system('clear')
-# peasantSound = lambda: sound.play_effect('8ve:8ve-beep-timber') # Peasant's signature sound
-# nobleSound = lambda: sound.play_effect('game:Woosh_1') # Nobleman's signature sound
-# royalSound = lambda: sound.play_effect('game:Ding_3') # Royalty's signature sound
+## cls = lambda: console.clear() # Clear console
+cls = lambda: os.system('clear') # Clear Console
+## peasantSound = lambda: sound.play_effect('8ve:8ve-beep-timber') # Peasant's signature sound
+## nobleSound = lambda: sound.play_effect('game:Woosh_1') # Nobleman's signature sound
+## royalSound = lambda: sound.play_effect('game:Ding_3') # Royalty's signature sound
 easyaddition = lambda: print("Hello World")
 
 class Player():
@@ -23,12 +22,16 @@ class Player():
 	gp = 0 # Track gold pieces (currency)
 	className = '' # Track classtype
 
+	# TODO
+	# items = []
+	# getters and setters and changers for items
+
 	
 	# Classes will be set default values according to characteristics
 	def classChoice(self, choice): # Initial class choice
 
 		if choice == 1: # Peasant
-			# peasantSound()
+			## peasantSound()
 			self.level = 1
 			self.health = 60
 			self.currentHP = self.health
@@ -39,7 +42,7 @@ class Player():
 			self.className = "Peasant"
 			# Total = 140
 		elif choice == 2: # Nobleman
-			# nobleSound()
+			## nobleSound()
 			self.level = 1
 			self.health = 100
 			self.currentHP = self.health
@@ -50,7 +53,7 @@ class Player():
 			self.className = "Nobleman"
 			# Total = 155
 		elif choice == 3: # Royalty
-			# royalSound()
+			## royalSound()
 			self.level = 1
 			self.health = 100
 			self.currentHP = self.health
@@ -200,6 +203,33 @@ class Enemy():
 			self.DMG = 15
 			self.Type = "Ogre"
 
+
+## TODO
+# Make merchant class, a store that the user can interact with even chose to attack or just attempt to steal (penalty of buffing enemy/free dmg)
+class Merchant(Player):
+	level = 0 # Track of progress
+	health = 0 # Track HP
+	currentHP = health
+	stamina = 0 # Track energy
+	mana = 0 # Track magic potential
+	xp = 0 # Track level-up progress
+	gp = 0 # Track gold pieces (currency)
+	className = '' # Track classtype
+	items = []
+
+	
+	
+
+	def encounter(self, player: Player): # Unluckily run into player
+		cls() # Clean console
+		
+
+
+	def exist(self): # Object comes to initial existance
+		ranNum = randint(1, 100)
+
+
+
 class Color():
 	PURPLE = '\033[95m'
 	CYAN = '\033[96m'
@@ -225,7 +255,7 @@ class RPGame():
 
 			# Adventure time
 			self.adventure(player)
-			# implement timer, 1-2 seconds
+			# TODO implement timer, 1-2 seconds
 	
 	# Allows user to pick a class
 	def characterChoice(self, player):
@@ -236,7 +266,7 @@ class RPGame():
 			
 			if userChoice == 1: # User might pick to be a peasant
 				cls()
-				# peasantSound()
+				## peasantSound()
 
 				print(Color.RED + "Due to years of backbreaking work, Caldria's peasants are known to have a high tolerance for even the most grueling of tasks.\n\n" + Color.END)
 				classChoice = int(input(Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Peasant\n0. No, let me check others\n" + Color.END))
@@ -247,7 +277,7 @@ class RPGame():
 
 			elif userChoice == 2: # User might choose a nobleman
 				cls()
-				# nobleSound()
+				## nobleSound()
 
 				print(Color.BLUE + "Born to a strong house with servants aplenty, the Caldrian noblemen are considered chivalrous and known to be healthy.\n\n" + Color.END)
 				classChoice = int(input(Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Nobleman\n0. No, let me check others\n" + Color.END))
@@ -258,7 +288,7 @@ class RPGame():
 			
 			elif userChoice == 3: # Perhaps user went for royalty
 				cls()
-				# royalSound()
+				## royalSound()
 
 				print(Color.PURPLE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + Color.END)
 				classChoice = int(input(Color.DARKCYAN + "Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others\n" + Color.END))
@@ -282,25 +312,26 @@ class RPGame():
 			cls()
 			
 			if userChoice == 1: # Explore
-				encounter = randint(1, 7)
-
-				if encounter == 1:
-					return
-					# Encounter stranger
-				elif encounter == 2:
-					return 
-					# Traveling merchant
-				elif encounter == 3:
-					return 
-					# Find treasure
-				elif encounter == 4: 
-					return 
-					# Dungeon time
-				elif encounter == 5:
-					return 
-					# Found a Town
-				elif encounter > 5: # ATM should have 2 rolls in 7, 28.57% chance
-					self.combat(player)
+				
+				while userChoice != 0 or player.isAlive == True:
+					encounter = randint(1, 7)
+					if encounter == 1:
+						return
+						# Encounter stranger
+					elif encounter == 2:
+						return 
+						# Traveling merchant
+					elif encounter == 3:
+						return 
+						# Find treasure
+					elif encounter == 4: 
+						return 
+						# Dungeon time
+					elif encounter == 5:
+						return 
+						# Found a Town
+					elif encounter > 5: # ATM should have 2 rolls in 7, 28.57% chance
+						self.combat(player)
 
 				# In order of priority
 				# Add chance for combat, traveling merchant, find treasure, dungeon, town
