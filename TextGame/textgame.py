@@ -21,6 +21,7 @@ class Player():
 	xp = 0 # Track level-up progress
 	gp = 0 # Track gold pieces (currency)
 	className = '' # Track classtype
+	DMG = 0
 
 	# TODO
 	# items = []
@@ -150,13 +151,18 @@ class Player():
 		self.gp = value
 	def changeGP(self, value):
 		self.gp += value
+
+	def getDMG(self):
+		return self.DMG
+	def setDMG(self, value):
+		self.DMG = value
+	def changeDMG(self, value):
+		self.DMG += value
+
 	
-class Enemy():
-	HP = 0 # Health
-	MP = 0 # Mana
-	XP = 0 # Kill experience
+class Enemy(Player):
+
 	DMG = 0 # Damage done to player
-	Type = ""
 
 	# def __init__(self, _HP, _MP, _XP, _DMG):
 	# 	self.HP = _HP
@@ -167,41 +173,41 @@ class Enemy():
 	def randomEnemy(self, number): # Takes a number between 1-100, set enemy depending on user luck
 
 		if number <= 10: # Strong mob, 10% chance
-			self.HP = 80
-			self.MP = 10
-			self.XP = 50
+			self.health = 80
+			self.mana = 10
+			self.xp = 50
 			self.DMG = 20
-			self.Type = "Troll"
+			self.className = "Troll"
 		if number <= 50 and number > 10: # Trash mob, 40% chance
-			self.HP = 20
-			self.MP = 0
-			self.XP = 10
+			self.health = 20
+			self.mana = 0
+			self.xp = 10
 			self.DMG = 5
-			self.Type = "Goblin"
+			self.className = "Goblin"
 		if number <= 80 and number > 50: # Tier 2 trash mob, 30% chance
-			self.HP = 30
-			self.MP = 0
-			self.XP = 20
+			self.health = 30
+			self.mana = 0
+			self.xp = 20
 			self.DMG = 10
-			self.Type = "Orc"
+			self.className = "Orc"
 		if number <= 85 and number > 80: # Free xp mob, 5% chance
-			self.HP = 40
-			self.MP = 0
-			self.XP = 30
+			self.health = 40
+			self.mana = 0
+			self.xp = 30
 			self.DMG = 0
-			self.Type = "Bear cub"
+			self.className = "Bear cub"
 		if number <= 90 and number > 85: # Boss mob, 5% chance
-			self.HP = 80
-			self.MP = 40
-			self.XP = 60
+			self.health = 80
+			self.mana = 40
+			self.xp = 60
 			self.DMG = 30
-			self.Type = "Wizard"
+			self.className = "Wizard"
 		if number <= 100 and number > 90: # Medium mob, 10% chance
-			self.HP = 100
-			self.MP = 0
-			self.XP = 40
+			self.health = 100
+			self.mana = 0
+			self.xp = 40
 			self.DMG = 15
-			self.Type = "Ogre"
+			self.className = "Ogre"
 
 
 ## TODO
@@ -332,6 +338,7 @@ class RPGame():
 						# Found a Town
 					elif encounter > 5: # ATM should have 2 rolls in 7, 28.57% chance
 						self.combat(player)
+						return
 
 				# In order of priority
 				# Add chance for combat, traveling merchant, find treasure, dungeon, town
@@ -362,34 +369,40 @@ class RPGame():
 		randNumber = randint(1, 100) # Create random variable to assign enemy encounter
 		opponent = Enemy() # Instantiate enemy object
 		opponent.randomEnemy(randNumber) # Assign random enemy
-		enemyHP = opponent.HP
 
-		while combatHP > 0 or self.isAlive == True or enemyHP > 0: # While player is still in the game
+		while combatHP > 0 or enemyHP > 0: # While player is still in the game
 
 			combatEnergy += 5 # Player regenerates stamina
 
 			cls()
-			self.displayCombatStats(player, combatMP)
-			userChoice = input(Color.RED + f"{opponent.Type}: You'll be a nice meal\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n0. Exit\n" + Color.END)
+			self.displayCombatStats(player, combatMP, combatEnergy)
+			self.displayCombatStatsEnemy(opponent)
+
+			userChoice = input(Color.RED + f"{opponent.className}: You'll be a nice meal\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n0. Exit\n" + Color.END)
+			userChoice = int(userChoice)
 
 			if userChoice == 1:
 				combatEnergy -= 10
-				opponent.HP -= 10
+				opponent.currentHP -= 10
 
-			if userChoice == 2:
+			elif userChoice == 2:
 				combatEnergy -= 20
-				opponent.HP -= 20
+				opponent.currentHP -= 20
 			
-			if userChoice == 3:
+			elif userChoice == 3:
 				print("Write me!")
 			
-			if userChoice == 0:
+			elif userChoice == 0:
 				self.isAlive = False
+				break
 
 
+	# Rewrite me after Enemy class remake
+	def displayCombatStatsEnemy(self, Enemy): # Show enemy stats
+		print(Color.DARKCYAN + f'{Enemy.className} - HP: {Enemy.getCurrentHP()}/{Enemy.getHP()}')
 
-	def displayCombatStats(self, player, mana): # Keep track of current combat stats
-		print(Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {mana}/{player.getMana()}\n' + Color.END)
+	def displayCombatStats(self, player, mana, stamina): # Keep track of current combat stats
+		print(Color.DARKCYAN + f'{player.className} - HP: {player.getCurrentHP()}/{player.getHP()} | MP: {mana}/{player.getMana()} | EN: {stamina}/{player.getStam()}\n' + Color.END)
 	
 	def displayStats(self, player): # For most menus
 		print(Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\n' + Color.END)
@@ -397,6 +410,7 @@ class RPGame():
 	def displayFullStats(self, player): # For when user wants/needs to see their total stats
 		print(Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n' + Color.END)
 		
+	
 	def displayInventory(self, player):
 		return
 		# print(f'player.')
