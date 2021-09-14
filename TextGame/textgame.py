@@ -22,10 +22,10 @@ class Player():
 	gp = 0 # Track gold pieces (currency)
 	className = '' # Track classtype
 	DMG = 0
+	inventory = []
 
 	# TODO
-	# items = []
-	# getters and setters and changers for items
+	# getters and setters and changers for inventory
 
 	
 	# Classes will be set default values according to characteristics
@@ -103,6 +103,8 @@ class Player():
 		
 			
 	# Getters and setters
+	#
+	# Level Functionality
 	def getLVL(self):
 		return self.level
 	def setLVL(self, value):
@@ -110,34 +112,7 @@ class Player():
 	def changeLVL(self, value):
 		self.level += value
 	
-	def getHP(self):
-		return self.health
-	def setHP(self, value):
-		self.health = value
-	def changeHP(self, value):
-		self.health += value
-
-	def getCurrentHP(self):
-		return self.currentHP
-	def setCurrentHP(self, value):
-		self.currentHP = value
-	def changeCurrentHP(self, value):
-		self.currentHP += value
-	
-	def getStam(self):
-		return self.stamina
-	def setStam(self, value):
-		self.stamina = value
-	def changeStam(self, value):
-		self.stamina += value
-	
-	def getMana(self):
-		return self.mana
-	def setMana(self, value):
-		self.mana = value
-	def changeMana(self, value):
-		self.mana += value
-		
+	# Experience Functionality
 	def getXP(self):
 		return self.xp
 	def setXP(self, value):
@@ -145,6 +120,39 @@ class Player():
 	def changeXP(self, value):
 		self.xp += value
 		
+	# Total HP Functionality
+	def getHP(self):
+		return self.health
+	def setHP(self, value):
+		self.health = value
+	def changeHP(self, value):
+		self.health += value
+
+	# Current HP Functionality
+	def getCurrentHP(self):
+		return self.currentHP
+	def setCurrentHP(self, value):
+		self.currentHP = value
+	def changeCurrentHP(self, value):
+		self.currentHP += value
+	
+	# Stamina Functionality
+	def getStam(self):
+		return self.stamina
+	def setStam(self, value):
+		self.stamina = value
+	def changeStam(self, value):
+		self.stamina += value
+	
+	# Mana Functionality
+	def getMana(self):
+		return self.mana
+	def setMana(self, value):
+		self.mana = value
+	def changeMana(self, value):
+		self.mana += value
+		
+	# Gold piece Functionality
 	def getGP(self):
 		return self.gp
 	def setGP(self, value):
@@ -152,6 +160,7 @@ class Player():
 	def changeGP(self, value):
 		self.gp += value
 
+	# Damage Functionality
 	def getDMG(self):
 		return self.DMG
 	def setDMG(self, value):
@@ -159,10 +168,25 @@ class Player():
 	def changeDMG(self, value):
 		self.DMG += value
 
+	# Inventory Functionality
+	def getinventory(self):
+		return self.inventory
+	def setinventory(self, value): # Instantly arrange inventory
+		self.inventory = value
+	def addinventory(self, value):
+		self.inventory.append(value)
+	def changeinventory(self, itemToRemove): # self, value to remove
+		# TODO: OPTIMIZE ME!
+		counter = 0
+		for i in self.inventory:
+			if i == itemToRemove:
+				self.inventory.pop(i)
+			counter += 1
+
+
+
 	
 class Enemy(Player):
-
-	DMG = 0 # Damage done to player
 
 	# def __init__(self, _HP, _MP, _XP, _DMG):
 	# 	self.HP = _HP
@@ -177,53 +201,48 @@ class Enemy(Player):
 			self.mana = 10
 			self.xp = 50
 			self.DMG = 20
+			self.gp = 50
 			self.className = "Troll"
-		if number <= 50 and number > 10: # Trash mob, 40% chance
+		elif number <= 50 and number > 10: # Trash mob, 40% chance
 			self.health = 20
 			self.mana = 0
 			self.xp = 10
 			self.DMG = 5
+			self.gp = 10
 			self.className = "Goblin"
-		if number <= 80 and number > 50: # Tier 2 trash mob, 30% chance
+		elif number <= 80 and number > 50: # Tier 2 trash mob, 30% chance
 			self.health = 30
 			self.mana = 0
 			self.xp = 20
 			self.DMG = 10
+			self.gp = 20
 			self.className = "Orc"
-		if number <= 85 and number > 80: # Free xp mob, 5% chance
+		elif number <= 85 and number > 80: # Free xp mob, 5% chance
 			self.health = 40
 			self.mana = 0
 			self.xp = 30
 			self.DMG = 0
+			self.gp = 20
 			self.className = "Bear cub"
-		if number <= 90 and number > 85: # Boss mob, 5% chance
+		elif number <= 90 and number > 85: # Boss mob, 5% chance
 			self.health = 80
 			self.mana = 40
 			self.xp = 60
 			self.DMG = 30
+			self.gp = 100
 			self.className = "Wizard"
-		if number <= 100 and number > 90: # Medium mob, 10% chance
+		elif number <= 100 and number > 90: # Medium mob, 10% chance
 			self.health = 100
 			self.mana = 0
 			self.xp = 40
 			self.DMG = 15
+			self.gp = 40
 			self.className = "Ogre"
 
 
 ## TODO
 # Make merchant class, a store that the user can interact with even chose to attack or just attempt to steal (penalty of buffing enemy/free dmg)
 class Merchant(Player):
-	level = 0 # Track of progress
-	health = 0 # Track HP
-	currentHP = health
-	stamina = 0 # Track energy
-	mana = 0 # Track magic potential
-	xp = 0 # Track level-up progress
-	gp = 0 # Track gold pieces (currency)
-	className = '' # Track classtype
-	items = []
-
-	
 	
 
 	def encounter(self, player: Player): # Unluckily run into player
@@ -345,7 +364,7 @@ class RPGame():
 
 
 			elif userChoice == 2: # Inventory
-				print(Color.DARKCYAN + 'No items collected' + Color.END)
+				print(Color.DARKCYAN + 'No inventory collected' + Color.END)
 			elif userChoice == 3: # Player stats
 				playerHP = player.getHP()
 				if playerHP >= 75:
