@@ -13,7 +13,7 @@ cls = lambda: os.system('clear') # Clear Console
 easyaddition = lambda: print("Hello World")
 
 class Player():
-	level = 0 # Track of progress
+	level = 0 # Track progress
 	health = 0 # Track HP
 	currentHP = health
 	stamina = 0 # Track energy
@@ -370,7 +370,7 @@ class RPGame():
 		opponent = Enemy() # Instantiate enemy object
 		opponent.randomEnemy(randNumber) # Assign random enemy
 
-		while combatHP > 0 or enemyHP > 0: # While player is still in the game
+		while combatHP > 0 or opponent.getHP() > 0: # While player is still in the game
 
 			combatEnergy += 5 # Player regenerates stamina
 
