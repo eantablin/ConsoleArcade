@@ -476,7 +476,38 @@ class EightBall():
 			print("No\n")
 		elif side == 7:
 			print("Sleep on it\n")
+
+class NumberGuesser():
+
+	def runGame(self):
+		cls()
+
+		userChoice = 1
+		while userChoice != 0:
+			userChoice = int(input(Color.BLUE + "Play guess the number!\n1. Play\n0. Exit" + Color.END))
+			cls()
+			if userChoice == 1:
+				self.guessTime()
 	
+	def guessTime(self):
+		MAX_NUM = 100
+		MIN_NUM = 1
+		secretNum = randint(MIN_NUM, MAX_NUM)
+		userChoice = 0
+
+		while userChoice != secretNum:
+			print(Color.BLUE + "I am thinking of a number between " + str(MIN_NUM) + " and " + str(MAX_NUM) + "..." + Color.END)
+			userChoice = int(input(Color.BLUE + "Guess the number: " + Color.END))
+			if userChoice == secretNum:
+				print(Color.DARKCYAN + "Wow, that's right!" + Color.END)
+			elif userChoice < secretNum:
+				print(Color.RED + "Higher!" + Color.END)
+			elif userChoice > secretNum:
+				print(Color.RED + "Lower!" + Color.END)
+			else:
+				print(Color.RED + "Try again!" + Color.END)
+
+
 def main():
 	
 	isAlive = True
@@ -485,7 +516,7 @@ def main():
 	
 		cls()
 		# sound.play_effect('digital:HighDown')
-		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. Load Save -- TBD\n0. Exit")
+		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. Load Save -- TBD\n4. NumberGuesser -- Stable\n0. Exit")
 		gameChoice = int(input())
 		
 		if gameChoice == 1: # Run RPG
@@ -504,6 +535,11 @@ def main():
 			print("TBD")
 			# fileName = input("saveName: ")
 			# gameSave = open(fileName, "w+")
+		
+		elif gameChoice == 4: # Run NumberGuesser
+			game = NumberGuesser()
+			game.runGame()
+			del game
 
 		elif gameChoice == 0:
 			isAlive = False
