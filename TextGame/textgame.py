@@ -238,6 +238,8 @@ class Enemy(Player):
 			self.DMG = 15
 			self.gp = 40
 			self.className = "Ogre"
+		
+		self.currentHP = self.health # Same for all
 
 
 ## TODO
@@ -382,14 +384,13 @@ class RPGame():
 
 	def combat(self, player):
 
-		combatHP = player.getCurrentHP() # Keep track of health
 		combatMP = player.getMana() # Track mana
 		combatEnergy = player.getStam() # Track stamina
 		randNumber = randint(1, 100) # Create random variable to assign enemy encounter
 		opponent = Enemy() # Instantiate enemy object
 		opponent.randomEnemy(randNumber) # Assign random enemy
 
-		while combatHP > 0 or opponent.getHP() > 0: # While player is still in the game
+		while player.currentHP > 0 and opponent.currentHP > 0: # While player and opponent are still in the game
 
 			combatEnergy += 5 # Player regenerates stamina
 
@@ -403,10 +404,12 @@ class RPGame():
 			if userChoice == 1:
 				combatEnergy -= 10
 				opponent.currentHP -= 10
+				player.currentHP -= 5
 
 			elif userChoice == 2:
 				combatEnergy -= 20
 				opponent.currentHP -= 20
+				player.currentHP -= 10
 			
 			elif userChoice == 3:
 				print("Write me!")
