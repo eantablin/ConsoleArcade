@@ -1,7 +1,7 @@
 import sys
 import os
 ## import console, sound 
-from random import randint # Used for eightBall
+from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
 
 
 # Shorthand functions 
@@ -481,7 +481,6 @@ class NumberGuesser():
 
 	def runGame(self):
 		cls()
-
 		userChoice = 1
 		while userChoice != 0:
 			userChoice = int(input(Color.BLUE + "Play guess the number!\n1. Play\n0. Exit" + Color.END))
@@ -507,6 +506,79 @@ class NumberGuesser():
 			else:
 				print(Color.RED + "Try again!" + Color.END)
 
+class RockPaperScissors():
+
+	t = 10000000 # For Ghetto Timer
+
+	def runGame(self):
+		cls()
+		userChoice = 1
+		while userChoice != 0: # While the user does not want to quit to game menu
+			userChoice = int(input(Color.BLUE + "Play Rock Paper Scissors!\n1. Play\n0. Exit" + Color.END))
+			cls()
+			if userChoice == 1: # Start the game
+				self.rockPaperScissors()
+			else:
+				print(Color.BLUE + "That is not a valid choice" + Color.END)
+	
+	def ghettoTimer(self):
+		time = [] # For Ghetto Timer
+		for i in range(0, self.t): # Ghetto Timer
+			time.append(i)
+		cls()
+
+	
+	def rockPaperScissors(self):
+		playOptions = ["rock", "paper", "scissors"]
+		userWin = False
+		while userWin != True:	
+			userChoice = str(input(Color.BLUE + "What is your choice?\n0. Exit " + Color.END))
+			userChoice.lower() # converts userChoice to all lowercase
+			compChoice = choice(playOptions) # Selects a 'random' play choice for the computer
+			if userChoice == "rock" or userChoice == "r": # Options for if the user selects Rock
+				print(Color.BLUE + "You chose rock..." + Color.END)
+				print(Color.BLUE + "Computer chose " + compChoice + "..." + Color.END)
+				if userChoice == compChoice: # If userChoice is the same as compChoice
+					print(Color.RED + "It's a draw!" + Color.END)
+					self.ghettoTimer()
+				elif compChoice == "paper": # If user loses
+					print(Color.RED + "You lose!" + Color.END)
+					self.ghettoTimer()
+				else: # If user wins
+					print(Color.RED + "You win!" + Color.END)
+					self.ghettoTimer()
+					userWin = True
+			elif userChoice == "paper" or userChoice == "p": # Options for if the user selects Paper
+				print(Color.BLUE + "You chose paper..." + Color.END)
+				print(Color.BLUE + "Computer chose " + compChoice +  "..." + Color.END)
+				if userChoice == compChoice: # If userChoice is the same as compChoice
+					print(Color.RED + "It's a draw!" + Color.END)
+					self.ghettoTimer()
+				elif compChoice == "scissors": # If user loses
+					print(Color.RED + "You lose!" + Color.END)
+					self.ghettoTimer()
+				else: # If user wins
+					print(Color.RED + "You win!" + Color.END)
+					self.ghettoTimer()
+					userWin = True
+			elif userChoice == "scissors" or userChoice == "s": # Options for if the user selects Scissors
+				print(Color.BLUE + "You chose scissors..." + Color.END)
+				print(Color.BLUE + "Computer chose "  + compChoice +  "..." + Color.END)
+				if userChoice == compChoice: # If userChoice is the same as compChoice
+					print("It's a draw!")
+					self.ghettoTimer()
+				elif compChoice == "rock": # If user loses
+					print(Color.RED + "You lose!" + Color.RED)
+					self.ghettoTimer()
+				else: # If user wins
+					print(Color.RED + "You win!" + Color.END)
+					self.ghettoTimer()
+					userWin = True
+			elif userChoice == "0": # If user wants to quit
+				main()
+			else: # If user puts an invalid choice
+				print(Color.BLUE + "That is not a valid choice." + Color.END)
+				self.ghettoTimer()
 
 def main():
 	
@@ -516,7 +588,7 @@ def main():
 	
 		cls()
 		# sound.play_effect('digital:HighDown')
-		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. Load Save -- TBD\n4. NumberGuesser -- Stable\n0. Exit")
+		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. Load Save -- TBD\n4. NumberGuesser -- Stable\n5. RockPaperScissors -- Stable\n0. Exit")
 		gameChoice = int(input())
 		
 		if gameChoice == 1: # Run RPG
@@ -538,6 +610,11 @@ def main():
 		
 		elif gameChoice == 4: # Run NumberGuesser
 			game = NumberGuesser()
+			game.runGame()
+			del game
+
+		elif gameChoice == 5: # Run RockPaperScissors
+			game = RockPaperScissors()
 			game.runGame()
 			del game
 
