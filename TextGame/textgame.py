@@ -2,7 +2,7 @@ import sys
 import os
 ## import console, sound 
 from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
-from games import eightball, numberguesser, rockpaperscissors, rpgame
+from games import eightball, numberguesser, rockpaperscissors, rpgame, hangman
 from dependencies import color
 
 
@@ -23,7 +23,7 @@ def main():
 	
 		cls()
 		# sound.play_effect('digital:HighDown')
-		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. Load Save -- TBD\n4. NumberGuesser -- Stable\n5. RockPaperScissors -- Stable\n0. Exit")
+		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. Load Save -- TBD\n4. NumberGuesser -- Stable\n5. RockPaperScissors -- Stable\n6. HangMan -- In Progress\n0. Exit")
 		gameChoice = int(input())
 		
 		if gameChoice == 1: # Run RPG
@@ -51,6 +51,11 @@ def main():
 
 		elif gameChoice == 5: # Run RockPaperScissors
 			game = rockpaperscissors.RockPaperScissors()
+			game.runGame()
+			del game
+
+		elif gameChoice == 6: # Run HangMan
+			game = hangman.HangMan()
 			game.runGame()
 			del game
 
