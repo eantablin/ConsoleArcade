@@ -2,10 +2,8 @@ import sys
 import os
 ## import console, sound 
 from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
-import eightball
-import numberguesser
-import rockpaperscissors
-import rpgame
+from games import eightball, numberguesser, rockpaperscissors, rpgame
+from dependencies import color
 
 
 # Shorthand functions 

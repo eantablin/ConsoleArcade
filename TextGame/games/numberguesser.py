@@ -1,6 +1,6 @@
 import os
 from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
-import color
+from dependencies import color
 
 cls = lambda: os.system('clear') # Clear Console
 
