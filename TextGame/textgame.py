@@ -1,7 +1,7 @@
 import sys
 import os
 ## import console, sound 
-from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
+from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors, Hangman
 from games import eightball, numberguesser, rockpaperscissors, rpgame, hangman
 from dependencies import color
 
