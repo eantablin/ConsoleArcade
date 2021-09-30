@@ -1,7 +1,7 @@
 import os # Used for clearing the console
 import string
 from random import randint, choice # Used to select an item from the words dictionary
-from dependencies import color, hangmanacsii
+from dependencies import color, hangmanascii
 
 cls = lambda: os.system('clear') # Clear Console
 
@@ -31,7 +31,7 @@ class HangMan():
 
         while len(wordLetters) > 0 and chances > 0:
             cls() 
-            print(hangmanacsii.printHangmanACSII(chances)) # Prints the corresponding Hangman acsii art
+            print(hangmanascii.printHangmanASCII(chances)) # Prints the corresponding Hangman acsii art
             print('')
             print(color.Color.BLUE + "You have " + str(chances) + " incorrect guesses left.\n""You have used these letters: ", " ".join(usedLetters) + color.Color.END) # " ".join(['a', 'b', 'cd']) --> 'a b cd'
             listLetters = [letter if letter in usedLetters else '-' for letter in word] # Current word ie (W - O R D)
@@ -53,7 +53,7 @@ class HangMan():
             else:
                 print(color.Color.BLUE + "Invalid selection." + color.Color.END)
         if chances == 0:
-            print(color.Color.RED + hangmanacsii.hangmanL + color.Color.END) # Prints the corresponding Hangman acsii art
+            print(color.Color.RED + hangmanascii.hangmanL + color.Color.END) # Prints the corresponding Hangman ascii art
             print('')
             print(color.Color.RED + "You have lost. The correct word was, " + word + "."+ color.Color.END)
         else:

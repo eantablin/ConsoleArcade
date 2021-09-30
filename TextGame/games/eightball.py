@@ -29,13 +29,13 @@ class EightBall():
 		elif side == 1:
 			print("Muddy waters\n")
 		elif side == 2:
-			print("It's dark in here\n")
+			print("It's dark\nin here\n")
 		elif side == 3:
 			print("Yes\n")
 		elif side == 4:
-			print("Don't bet on it\n")
+			print("Don't bet\non it\n")
 		elif side == 5:
-			print("Could you repeat that?\n")
+			print("Could you\nrepeat that?\n")
 		elif side == 6:
 			print("No\n")
 		elif side == 7:
