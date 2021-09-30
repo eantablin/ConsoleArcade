@@ -255,7 +255,18 @@ class Item():
 	rarity = 0 # Common, Rare, Heroic, Legendary
 
 
-# class Buff(Item):
+class Buff(Item):
+	health = 0 # Healing
+	healthRegen = 0 # Heal Over Time
+	damage = 0
+	
+	mana = 0 # Mana Influx
+	managRegen = 0
+
+
+	def createBuff(self, attribute):
+		return
+
 
 # class Debuff(Item):
 
