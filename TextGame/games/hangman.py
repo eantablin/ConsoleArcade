@@ -31,7 +31,7 @@ class HangMan():
 
         while len(wordLetters) > 0 and chances > 0:
             cls() 
-            print(hangmanacsii.printHangmanACSII(chances))
+            print(hangmanacsii.printHangmanACSII(chances)) # Prints the corresponding Hangman acsii art
             print('')
             print(color.Color.BLUE + "You have " + str(chances) + " incorrect guesses left.\n""You have used these letters: ", " ".join(usedLetters) + color.Color.END) # " ".join(['a', 'b', 'cd']) --> 'a b cd'
             listLetters = [letter if letter in usedLetters else '-' for letter in word] # Current word ie (W - O R D)
@@ -53,10 +53,10 @@ class HangMan():
             else:
                 print(color.Color.BLUE + "Invalid selection." + color.Color.END)
         if chances == 0:
-            print(color.Color.RED + hangmanacsii.hangmanL + color.Color.END)
+            print(color.Color.RED + hangmanacsii.hangmanL + color.Color.END) # Prints the corresponding Hangman acsii art
             print('')
             print(color.Color.RED + "You have lost. The correct word was, " + word + "."+ color.Color.END)
         else:
-            print(hangmanacsii.hangmanW)
+            print(hangmanacsii.hangmanW) # Prints the corresponding Hangman acsii art
             print('')
             print(color.Color.BLUE + "You have guessed the word, " + word +", correctly!"+ color.Color.END)
