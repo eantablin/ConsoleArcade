@@ -31,6 +31,7 @@ class Player():
 			self.xp = 0
 			self.gp = 0
 			self.className = "Peasant"
+			self.DMG = 10
 			# Total = 140
 		elif choice == 2: # Nobleman
 			## nobleSound()
@@ -42,6 +43,7 @@ class Player():
 			self.xp = 0
 			self.gp = 80
 			self.className = "Nobleman"
+			self.dmg = 12
 			# Total = 155
 		elif choice == 3: # Royalty
 			## royalSound()
@@ -53,6 +55,7 @@ class Player():
 			self.xp = 0
 			self.gp = 200
 			self.className = "Royalty"
+			self.dmg = 15
 			# Total = 145
 		
 		cls()
@@ -69,19 +72,22 @@ class Player():
 				self.setHP(self.getHP() + 10)
 				self.setStam(self.getStam() + 6)
 				self.setMana(self.getMana() + 5)
-				# Total = 21
+				self.setDMG(self.getDMG() + 5)
+				# Total = 26
 				
 			elif self.className == "Nobleman":
 				self.setHP(self.getHP() + 4)
 				self.setStam(self.getStam() + 4)
 				self.setMana(self.getMana() + 8)
-				# Total = 16
+				self.setDMG(self.getDMG() + 3)
+				# Total = 19
 			
 			elif self.className == "Royalty":
 				self.setHP(self.getHP() + 2)
 				self.setStam(self.getStam() + 3)
 				self.setMana(self.getMana() + 10)
-				# Total = 15
+				self.setDMG(self.getDMG() + 1)
+				# Total = 16
 
 			# sound.play_effect('arcade:Powerup_1')
 			self.level += 1 # Base upgrade
@@ -171,8 +177,8 @@ class Player():
 		for i in self.inventory:
 			if i == itemToRemove:
 				self.inventory.pop(i)
+				return
 			counter += 1
-
 	
 class Enemy(Player):
 
@@ -229,7 +235,6 @@ class Enemy(Player):
 		
 		self.currentHP = self.health # Same for all
 
-
 ## TODO
 # Make merchant class, a store that the user can interact with even choose to attack or just attempt to steal (penalty of buffing enemy/free dmg)
 class Merchant(Player):
@@ -243,6 +248,26 @@ class Merchant(Player):
 	def exist(self): # Object comes to initial existance
 		ranNum = randint(1, 100)
 	
+class Item():
+	name = "" # Item name
+	price = 0 # Item price
+	attribute = "" # Item type
+	rarity = 0 # Common, Rare, Heroic, Legendary
+
+
+# class Buff(Item):
+
+# class Debuff(Item):
+
+# class Junk(Item):
+
+# class Equipment(Item):
+
+
+
+
+
+
 class RPGame():
 	
 	isAlive = True # Game still running?
@@ -379,20 +404,27 @@ class RPGame():
 
 			if userChoice == 1:
 				combatEnergy -= 10
-				opponent.currentHP -= 10
-				player.currentHP -= 5
+				opponent.currentHP -= player.getDMG()
+				player.currentHP -= opponent.getDMG()
 
 			elif userChoice == 2:
 				combatEnergy -= 20
-				opponent.currentHP -= 20
-				player.currentHP -= 10
+				opponent.currentHP -= player.getDMG() * 2
+				player.currentHP -= opponent.getDMG()
 			
 			elif userChoice == 3:
-				print("Write me!")
+				self.displayInventory(player)
 			
 			elif userChoice == 0:
 				self.isAlive = False
 				break
+
+			## TODO
+			# Win/loss conditions
+			# elif player.currentHP <= 0:
+			# 	break
+			# elif opponent.currentHP <= 0:
+			# 	player.inventory.append(opponent.)
 
 
 	# Rewrite me after Enemy class remake
@@ -410,5 +442,9 @@ class RPGame():
 		
 	
 	def displayInventory(self, player):
-		return
+		inv = player.getinventory()
+		for i in inv:
+			print(i)
+		input()
+
 		# print(f'player.')
