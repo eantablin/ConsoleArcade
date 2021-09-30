@@ -51,7 +51,7 @@ hangman10 = "____________\n |/       \n |         \n |         \n |        \n | 
 hangmanL = "____________\n |/      |\n |       |\n |      (_)\n |      \|/\n |       | \n |      / \ \n_|___"
 hangmanW = "____________\n |/       \n |         \n |       _ \n |      (_)\n |      \|/\n |       | \n_|___   / \ "
 
-def printHangmanACSII(chances):
+def printHangmanASCII(chances):
   if chances == 10:
       return hangman10 
   elif chances == 9:
