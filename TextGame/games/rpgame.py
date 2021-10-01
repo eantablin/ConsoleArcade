@@ -95,6 +95,8 @@ class Player():
 			self.level += 1 # Base upgrade
 			self.currentHP = self.health # Reset HP to max // Free heal
 			totalXP -= 100
+			print("I feel stronger!")
+			sleep(3)
 		
 		if totalXP < 100: # Keep track of total XP
 			self.setXP(totalXP)
@@ -399,19 +401,8 @@ class RPGame():
 
 
 			elif userChoice == 2: # Inventory
-
-				# TODO
-				# Properly implement displaying inventory
-				player.addinventory("apples")
-				inventory = player.getinventory()
-				inventoryLength = len(inventory)
-
-				if inventoryLength > 0: # If there's something in inventory
-					for i in inventory: # Loop through it's entirety
-						print(color.Color.DARKCYAN + f"{i}" + color.Color.END) # Output each slot
-
-				else: # Empty satchel
-					print("My satchel is empty.")
+				self.displayInventory(player)
+				
 
 
 			elif userChoice == 3: # Player stats
@@ -445,7 +436,7 @@ class RPGame():
 
 			cls()
 			self.displayCombatStats(player, combatMP, combatEnergy)
-			self.displayCombatStatsEnemy(opponent)
+			self.displayEnemyStats(opponent)
 
 			userChoice = input(color.Color.RED + f"{opponent.className}: {opponent.catchPhrase}\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n4. Flee\n0. Exit\n" + color.Color.END)
 			userChoice = int(userChoice)
@@ -491,30 +482,40 @@ class RPGame():
 			# elif opponent.currentHP <= 0:
 			# 	player.inventory.append(opponent.)
 
-		if player.isAlive() == True:
+		if player.isAlive() == True and opponent.isAlive() == False:
 			player.addinventory("Health Potion")
 			player.checklevelUP(opponent.getXP())
 
 
 
+
 	# Rewrite me after Enemy class remake
-	def displayCombatStatsEnemy(self, Enemy): # Show enemy stats
+	def displayEnemyStats(self, Enemy): # Show enemy stats
 		print(color.Color.DARKCYAN + f'{Enemy.className} - HP: {Enemy.getCurrentHP()}/{Enemy.getHP()}')
 
 	def displayCombatStats(self, player, mana, stamina): # Keep track of current combat stats
 		print(color.Color.DARKCYAN + f'{player.className} - HP: {player.getCurrentHP()}/{player.getHP()} | MP: {mana}/{player.getMana()} | EN: {stamina}/{player.getStam()}\n' + color.Color.END)
 	
 	def displayStats(self, player): # For most menus
-		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\n' + color.Color.END)
+		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()} | XP: {player.getXP()}\n ' + color.Color.END)
 	
 	def displayFullStats(self, player): # For when user wants/needs to see their total stats
 		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n' + color.Color.END)
 		
 	
 	def displayInventory(self, player):
-		inv = player.getinventory()
-		for i in inv:
-			print(i)
-		input()
+
+		# TODO
+		# Properly implement displaying inventory
+		player.addinventory("apples")
+		inventory = player.getinventory()
+		inventoryLength = len(inventory)
+
+		if inventoryLength > 0: # If there's something in inventory
+			for i in inventory: # Loop through it's entirety
+				print(color.Color.DARKCYAN + f"{i}" + color.Color.END) # Output each slot
+
+		else: # Empty satchel
+			print("My satchel is empty.")
 
 		# print(f'player.')
