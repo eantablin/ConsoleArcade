@@ -1,5 +1,6 @@
 import os
 from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
+from dependencies import eightballascii
 
 cls = lambda: os.system('clear') # Clear Console
 
@@ -25,18 +26,18 @@ class EightBall():
 		side = randint(0,7)
 
 		if side == 0:
-			print("Believe so\n")
+			print(eightballascii.eightBall0)
 		elif side == 1:
-			print("Muddy waters\n")
+			print(eightballascii.eightBall1)
 		elif side == 2:
-			print("It's dark\nin here\n")
+			print(eightballascii.eightBall2)
 		elif side == 3:
-			print("Yes\n")
+			print(eightballascii.eightBall3)
 		elif side == 4:
-			print("Don't bet\non it\n")
+			print(eightballascii.eightBall4)
 		elif side == 5:
-			print("Could you\nrepeat that?\n")
+			print(eightballascii.eightBall5)
 		elif side == 6:
-			print("No\n")
+			print(eightballascii.eightBall6)
 		elif side == 7:
-			print("Sleep on it\n")
+			print(eightballascii.eightBall7)
