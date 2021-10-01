@@ -290,11 +290,13 @@ class RPGame():
 		# sound.play_effect('game:Click_1')
 		self.characterChoice(player)
 		
-		while self.isAlive == True:
+		while self.isAlive == True and player.currentHP > 0:
 
 			# Adventure time
 			self.adventure(player)
 			# TODO implement timer, 1-2 seconds
+		
+		return
 	
 	# Allows user to pick a class
 	def characterChoice(self, player):
@@ -378,7 +380,20 @@ class RPGame():
 
 
 			elif userChoice == 2: # Inventory
-				print(color.Color.DARKCYAN + 'No inventory collected' + color.Color.END)
+
+				# TODO
+				# Properly implement displaying inventory
+				inventory = player.getinventory()
+				inventoryLength = len(inventory)
+
+				if inventoryLength > 0:
+					for i in inventory:
+						print(color.Color.DARKCYAN + player.inventory[0] + color.Color.END)
+
+				else:
+					print("My satchel is empty.")
+
+
 			elif userChoice == 3: # Player stats
 				playerHP = player.getHP()
 				if playerHP >= 75:
