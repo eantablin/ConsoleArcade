@@ -1,6 +1,7 @@
 import os
 from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
 from dependencies import color
+from time import sleep
 
 cls = lambda: os.system('clear') # Clear Console
 
@@ -15,6 +16,7 @@ class Player():
 	className = '' # Track classtype
 	DMG = 0
 	inventory = []
+	catchPhrase = ""
 
 
 	
@@ -93,10 +95,17 @@ class Player():
 			self.level += 1 # Base upgrade
 			self.currentHP = self.health # Reset HP to max // Free heal
 			totalXP -= 100
+			print("I feel stronger!")
+			sleep(3)
 		
 		if totalXP < 100: # Keep track of total XP
 			self.setXP(totalXP)
 		
+	def isAlive(self):
+		if self.currentHP > 0:
+			return True
+		else:
+			return False
 			
 	# Getters and setters
 	#
@@ -164,6 +173,12 @@ class Player():
 	def changeDMG(self, value):
 		self.DMG += value
 
+	# CatchPhrase Functionality
+	def getcatchPhrase(self):
+		return self.catchPhrase
+	def setcatchPhrase(self, value):
+		self.catchPhrase = value
+
 	# Inventory Functionality
 	def getinventory(self):
 		return self.inventory
@@ -171,7 +186,7 @@ class Player():
 		self.inventory = value
 	def addinventory(self, value):
 		self.inventory.append(value)
-	def changeinventory(self, itemToRemove): # self, value to remove
+	def removeinventory(self, itemToRemove): # self, value to remove
 		# TODO: OPTIMIZE ME!
 		counter = 0
 		for i in self.inventory:
@@ -197,6 +212,7 @@ class Enemy(Player):
 			self.DMG = 20
 			self.gp = 50
 			self.className = "Troll"
+			self.catchPhrase = "MMm yum yum hoo min"
 		elif number <= 50 and number > 10: # Trash mob, 40% chance
 			self.health = 20
 			self.mana = 0
@@ -204,6 +220,7 @@ class Enemy(Player):
 			self.DMG = 5
 			self.gp = 10
 			self.className = "Goblin"
+			self.catchPhrase = "Givs us the gold, givs us!"
 		elif number <= 80 and number > 50: # Tier 2 trash mob, 30% chance
 			self.health = 30
 			self.mana = 0
@@ -211,6 +228,7 @@ class Enemy(Player):
 			self.DMG = 10
 			self.gp = 20
 			self.className = "Orc"
+			self.catchPhrase = "Orcun like human, Orcun eat human."
 		elif number <= 85 and number > 80: # Free xp mob, 5% chance
 			self.health = 40
 			self.mana = 0
@@ -218,6 +236,7 @@ class Enemy(Player):
 			self.DMG = 0
 			self.gp = 20
 			self.className = "Bear cub"
+			self.catchPhrase = "bearcubscreeches.mp3"
 		elif number <= 90 and number > 85: # Boss mob, 5% chance
 			self.health = 80
 			self.mana = 40
@@ -225,6 +244,7 @@ class Enemy(Player):
 			self.DMG = 30
 			self.gp = 100
 			self.className = "Wizard"
+			self.catchPhrase = "Away, fiend!"
 		elif number <= 100 and number > 90: # Medium mob, 10% chance
 			self.health = 100
 			self.mana = 0
@@ -232,6 +252,7 @@ class Enemy(Player):
 			self.DMG = 15
 			self.gp = 40
 			self.className = "Ogre"
+			self.catchPhrase = "Gib shiny!"
 		
 		self.currentHP = self.health # Same for all
 
@@ -357,15 +378,24 @@ class RPGame():
 				while userChoice != 0 or player.isAlive == True:
 					encounter = randint(1, 7)
 					if encounter == 1:
+						print("Stranger says hi")
+						sleep(1)
 						return
 						# Encounter stranger
 					elif encounter == 2:
+						print("A merchant has set up shop across the road")
+						sleep(1)
 						return 
 						# Traveling merchant
 					elif encounter == 3:
+						print("I found a chest!")
+						player.addinventory("Health Potion")
+						sleep(1)
 						return 
 						# Find treasure
 					elif encounter == 4: 
+						print("That cave looks interesting, maybe I should go in")
+						sleep(1)
 						return 
 						# Dungeon time
 					elif encounter == 5:
@@ -380,29 +410,20 @@ class RPGame():
 
 
 			elif userChoice == 2: # Inventory
-
-				# TODO
-				# Properly implement displaying inventory
-				inventory = player.getinventory()
-				inventoryLength = len(inventory)
-
-				if inventoryLength > 0:
-					for i in inventory:
-						print(color.Color.DARKCYAN + player.inventory[0] + color.Color.END)
-
-				else:
-					print("My satchel is empty.")
+				self.displayInventory(player)
+				
 
 
 			elif userChoice == 3: # Player stats
-				playerHP = player.getHP()
-				if playerHP >= 75:
+				playerHP = player.getCurrentHP()
+				playerTotalHP = player.getHP()
+				if playerHP >= playerTotalHP * .75: # Top 75% of hp
 					print(color.Color.DARKCYAN + "I'll be fine" + color.Color.END)
-				elif playerHP >= 50 and playerHP < 75:
+				elif playerHP >= playerTotalHP * .50 and playerHP < playerTotalHP * .75: # Between 50 - 75%
 					print(color.Color.DARKCYAN + "Some cuts and bruises, I'm otherwise okay" + color.Color.END)
-				elif playerHP >= 25 and playerHP < 50:
+				elif playerHP >= playerTotalHP * .25 and playerHP < playerTotalHP * .50: # Between 25 - 50%
 					print(color.Color.DARKCYAN + "I'll need healing soon" + color.Color.END)
-				elif playerHP >= 1 and playerHP < 25:
+				elif playerHP >= playerTotalHP * .1 and playerHP < playerTotalHP * .25: # Between 1-25%
 					print(color.Color.DARKCYAN + "Need healing, I might not make it" + color.Color.END)
 				else:
 					print(color.Color.DARKCYAN + "I could use some healing" + color.Color.END)
@@ -414,6 +435,7 @@ class RPGame():
 		combatMP = player.getMana() # Track mana
 		combatEnergy = player.getStam() # Track stamina
 		randNumber = randint(1, 100) # Create random variable to assign enemy encounter
+		willFlee = randint(1,100) # Predetermined chance to flee
 		opponent = Enemy() # Instantiate enemy object
 		opponent.randomEnemy(randNumber) # Assign random enemy
 
@@ -423,23 +445,40 @@ class RPGame():
 
 			cls()
 			self.displayCombatStats(player, combatMP, combatEnergy)
-			self.displayCombatStatsEnemy(opponent)
+			self.displayEnemyStats(opponent)
 
-			userChoice = input(color.Color.RED + f"{opponent.className}: You'll be a nice meal\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n0. Exit\n" + color.Color.END)
+			userChoice = input(color.Color.RED + f"{opponent.className}: {opponent.catchPhrase}\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n4. Flee\n0. Exit\n" + color.Color.END)
 			userChoice = int(userChoice)
 
-			if userChoice == 1:
+			if userChoice == 1: # Standard attack
 				combatEnergy -= 10
 				opponent.currentHP -= player.getDMG()
-				player.currentHP -= opponent.getDMG()
 
-			elif userChoice == 2:
+				if opponent.isAlive() == True:
+					player.currentHP -= opponent.getDMG()
+
+			elif userChoice == 2: # Strong attack
 				combatEnergy -= 20
 				opponent.currentHP -= player.getDMG() * 2
-				player.currentHP -= opponent.getDMG()
+				
+				if opponent.isAlive() == True:
+					player.currentHP -= opponent.getDMG()
 			
-			elif userChoice == 3:
+			elif userChoice == 3: # Display satchel contents
 				self.displayInventory(player)
+
+			elif userChoice == 4: # Attempt to flee
+				willFlee = randint(1,100)
+
+				if willFlee > 50:
+					print("Phew, that was close")
+
+					sleep(2)
+					break
+				
+				else: # On fail, opponent gets free hit; just git gud
+					player.currentHP -= opponent.getDMG()
+
 			
 			elif userChoice == 0:
 				self.isAlive = False
@@ -452,25 +491,40 @@ class RPGame():
 			# elif opponent.currentHP <= 0:
 			# 	player.inventory.append(opponent.)
 
+		if player.isAlive() == True and opponent.isAlive() == False:
+			player.addinventory("Health Potion")
+			player.checklevelUP(opponent.getXP())
+
+
+
 
 	# Rewrite me after Enemy class remake
-	def displayCombatStatsEnemy(self, Enemy): # Show enemy stats
+	def displayEnemyStats(self, Enemy): # Show enemy stats
 		print(color.Color.DARKCYAN + f'{Enemy.className} - HP: {Enemy.getCurrentHP()}/{Enemy.getHP()}')
 
 	def displayCombatStats(self, player, mana, stamina): # Keep track of current combat stats
 		print(color.Color.DARKCYAN + f'{player.className} - HP: {player.getCurrentHP()}/{player.getHP()} | MP: {mana}/{player.getMana()} | EN: {stamina}/{player.getStam()}\n' + color.Color.END)
 	
 	def displayStats(self, player): # For most menus
-		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\n' + color.Color.END)
+		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()} | XP: {player.getXP()}\n ' + color.Color.END)
 	
 	def displayFullStats(self, player): # For when user wants/needs to see their total stats
 		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n' + color.Color.END)
 		
 	
 	def displayInventory(self, player):
-		inv = player.getinventory()
-		for i in inv:
-			print(i)
-		input()
+
+		# TODO
+		# Properly implement displaying inventory
+		player.addinventory("apples")
+		inventory = player.getinventory()
+		inventoryLength = len(inventory)
+
+		if inventoryLength > 0: # If there's something in inventory
+			for i in inventory: # Loop through it's entirety
+				print(color.Color.DARKCYAN + f"{i}" + color.Color.END) # Output each slot
+
+		else: # Empty satchel
+			print("My satchel is empty.")
 
 		# print(f'player.')
