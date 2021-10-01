@@ -378,15 +378,24 @@ class RPGame():
 				while userChoice != 0 or player.isAlive == True:
 					encounter = randint(1, 7)
 					if encounter == 1:
+						print("Stranger says hi")
+						sleep(1)
 						return
 						# Encounter stranger
 					elif encounter == 2:
+						print("A merchant has set up shop across the road")
+						sleep(1)
 						return 
 						# Traveling merchant
 					elif encounter == 3:
+						print("I found a chest!")
+						player.addinventory("Health Potion")
+						sleep(1)
 						return 
 						# Find treasure
 					elif encounter == 4: 
+						print("That cave looks interesting, maybe I should go in")
+						sleep(1)
 						return 
 						# Dungeon time
 					elif encounter == 5:
@@ -408,13 +417,13 @@ class RPGame():
 			elif userChoice == 3: # Player stats
 				playerHP = player.getCurrentHP()
 				playerTotalHP = player.getHP()
-				if playerHP >= playerTotalHP * .75:
+				if playerHP >= playerTotalHP * .75: # Top 75% of hp
 					print(color.Color.DARKCYAN + "I'll be fine" + color.Color.END)
-				elif playerHP >= playerTotalHP * .50 and playerHP < playerTotalHP * .75:
+				elif playerHP >= playerTotalHP * .50 and playerHP < playerTotalHP * .75: # Between 50 - 75%
 					print(color.Color.DARKCYAN + "Some cuts and bruises, I'm otherwise okay" + color.Color.END)
-				elif playerHP >= playerTotalHP * .25 and playerHP < playerTotalHP * .50:
+				elif playerHP >= playerTotalHP * .25 and playerHP < playerTotalHP * .50: # Between 25 - 50%
 					print(color.Color.DARKCYAN + "I'll need healing soon" + color.Color.END)
-				elif playerHP >= playerTotalHP * .1 and playerHP < playerTotalHP * .25:
+				elif playerHP >= playerTotalHP * .1 and playerHP < playerTotalHP * .25: # Between 1-25%
 					print(color.Color.DARKCYAN + "Need healing, I might not make it" + color.Color.END)
 				else:
 					print(color.Color.DARKCYAN + "I could use some healing" + color.Color.END)
