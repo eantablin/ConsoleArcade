@@ -104,12 +104,8 @@ def play(game, xPlayer, oPlayer, printGame = True):
                 if printGame:
                     print(letter + ' wins!')
                 return letter
-
             # Switch Players
-            if letter == 'X':
-                letter = 'O' 
-            else:
-                letter = 'X'
+            letter = 'O' if letter == 'X' else 'X'
         
         if printGame:
             print("It's a tie!")
