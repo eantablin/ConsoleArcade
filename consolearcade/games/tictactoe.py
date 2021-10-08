@@ -15,7 +15,11 @@ class TicTacToe():
 
     @staticmethod # Used because there is no need to pass in self
     def printBoardNums():
-        # 0 | 1 | 2 etc
+        """
+        | 0 | 1 | 2 |
+        | 3 | 4 | 5 |
+        | 6 | 7 | 8 |
+        """
         numberBoard = [[str(i) for i in range(j * 3, (j + 1) * 3)] for j in range(3)] # Give indices of what number is in what row
         for row in numberBoard:
             print('| ' + ' | '.join(row) + ' |')
