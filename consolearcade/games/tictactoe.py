@@ -19,7 +19,7 @@ class TicTacToe():
         numberBoard = [[str(i) for i in range(j * 3, (j + 1) * 3)] for j in range(3)] # Give indices of what number is in what row
         for row in numberBoard:
             print('| ' + ' | '.join(row) + ' |')
-    
+
     def availableMoves(self): # Returns a list of the available (unused) spaces
         moves = []
         for (i, space) in enumerate(self.board): # Ex: [(0, ' '), (1, 'x'), (2, 'o')]
@@ -40,8 +40,7 @@ class TicTacToe():
             if self.winner(square, letter):
                 self.currentWinner = letter
             return True
-        else:
-            return False
+        return False
     
     def winner(self, square, letter):
         # Winner if there is a row of the same letter
@@ -53,7 +52,7 @@ class TicTacToe():
         
         # Check for column win
         colIndex = square % 3
-        column = [self.board[colIndex + 1 * 3] for i in range(3)]
+        column = [self.board[colIndex + i * 3] for i in range(3)]
         if all([spot == letter for spot in column]): # Checks for three of the same letter in a column
             return True
 
@@ -69,6 +68,36 @@ class TicTacToe():
         # If no winner
         return False
 
+    def play(self, game, xPlayer, oPlayer, printGame = True):
+        if printGame:
+            self.printBoardNums()
+    
+        letter = 'X' # First player is x
+
+        while self.emptySquares():
+        # Get moves from the two players
+            if letter == 'O':
+                square = oPlayer.getMove(game)
+            else:
+                square = xPlayer.getMove(game)
+
+            if self.makeMove(square, letter):
+                if printGame:
+                    print(letter + f" makes a move to square {square}")
+                    self.printBoard()
+                    print('')
+            
+            if self.currentWinner:
+                if printGame:
+                    print(letter + ' wins!')
+                return letter
+            # Switch Players
+            letter = 'O' if letter == 'X' else 'X'
+    
+        if printGame:
+            print("It's a tie!")
+
+
     def runGame(self):
         cls()
         xPlayer = HumanPlayer('X')
@@ -79,36 +108,7 @@ class TicTacToe():
             userChoice = int(input("Play Tic-Tac-Toe?\n1. Play\n0. Exit "))
             cls()
             if userChoice == 1:
-                play(t, xPlayer, oPlayer, printGame = True)
-
-def play(game, xPlayer, oPlayer, printGame = True):
-    if printGame:
-        game.printBoardNums()
-    
-    letter = 'X' # First player is x
-
-    while game.emptySquares():
-        # Get moves from the two players
-        if letter == 'O':
-            square = oPlayer.getMove(game)
-        else:
-            square = xPlayer.getMove(game)
-
-        if TicTacToe.makeMove(square, letter):
-            if printGame:
-                print(letter + f" makes a move to square {square}")
-                TicTacToe.printBoard()
-                print('')
-            
-            if TicTacToe.currentWinner:
-                if printGame:
-                    print(letter + ' wins!')
-                return letter
-            # Switch Players
-            letter = 'O' if letter == 'X' else 'X'
-        
-        if printGame:
-            print("It's a tie!")
+                TicTacToe.play(self, t, xPlayer, oPlayer, printGame = True)
 
 class Player():
     def __init__(self, letter): # Letter: x or o
@@ -122,7 +122,7 @@ class ComputerPlayer(Player):
         super().__init__(letter)
 
     def getMove(self, game):
-        square = choice(TicTacToe.availableMoves()) # Selects a random available space for ComputerPlayer
+        square = choice(TicTacToe.availableMoves(game)) # Selects a random available space for ComputerPlayer
         return square
 
 class HumanPlayer(Player):
@@ -133,12 +133,18 @@ class HumanPlayer(Player):
         validSquare = False
         val = None
         while not validSquare:
-            square = input(self.letter + "'s turn. Input move (0-9): ")
-            try:
+            square = input(self.letter + "'s turn. Input move (0-8): ")
+            validMoves = ['0', '1', '2', '3', '4', '5', '6', '7', '8']
+            if square in validMoves:
                 val = int(square)
-                if val not in game.availableMoves():
-                    raise ValueError
-                valid_square = True
-            except ValueError:
-                print('Invalid square. Try again.')
+            if val not in game.availableMoves():
+                print("Invalid square, try again.")
+            else:
+                validSquare = True
+            # try:
+            #     if val not in game.availableMoves():
+            #         raise ValueError
+            #     valid_square = True
+            # except ValueError:
+            #     print('Invalid square. Try again.')
         return val
