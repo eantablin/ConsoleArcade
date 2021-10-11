@@ -1,5 +1,6 @@
 import os
 import math 
+import time
 from random import choice
 
 cls = lambda: os.system('clear') # Clear Console
@@ -30,6 +31,12 @@ class TicTacToe():
             if space == ' ':
                 moves.append(i)
         return moves
+
+    def clearBoard(self): # Clears TicTacToe board
+        for (i, space) in enumerate(self.board):
+            if space == 'X' or space == 'O':
+                space == ' '
+        return self.board
 
     def emptySquares(self):
         return ' ' in self.board
@@ -98,6 +105,8 @@ class TicTacToe():
             # Switch Players
             letter = 'O' if letter == 'X' else 'X'
     
+            time.sleep(1)
+
         if printGame:
             print("It's a tie!")
 
@@ -112,6 +121,7 @@ class TicTacToe():
             userChoice = int(input("Play Tic-Tac-Toe?\n1. Play\n0. Exit "))
             cls()
             if userChoice == 1:
+                self.clearBoard()
                 TicTacToe.play(self, t, xPlayer, oPlayer, printGame = True)
 
 class Player():
