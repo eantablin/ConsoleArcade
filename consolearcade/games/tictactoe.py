@@ -32,12 +32,6 @@ class TicTacToe():
                 moves.append(i)
         return moves
 
-    def clearBoard(self): # Clears TicTacToe board
-        for (i, space) in enumerate(self.board):
-            if space == 'X' or space == 'O':
-                space == ' '
-        return self.board
-
     def emptySquares(self):
         return ' ' in self.board
 
@@ -113,15 +107,14 @@ class TicTacToe():
 
     def runGame(self):
         cls()
-        xPlayer = HumanPlayer('X')
-        oPlayer = ComputerPlayer('O')
-        t = TicTacToe()
         userChoice = 1
         while userChoice != 0:
             userChoice = int(input("Play Tic-Tac-Toe?\n1. Play\n0. Exit "))
             cls()
             if userChoice == 1:
-                self.clearBoard()
+                xPlayer = HumanPlayer('X')
+                oPlayer = ComputerPlayer('O')
+                t = TicTacToe()
                 TicTacToe.play(self, t, xPlayer, oPlayer, printGame = True)
 
 class Player():
