@@ -14,6 +14,10 @@ class TicTacToe():
         for row in [self.board[i * 3: (i + 1) * 3] for i in range(3)]: # Break up into groups of 3 spaces
             print('| ' + ' | '.join(row) + ' |')
 
+    def clearBoard(self):
+        self.board = [' ' for _ in range(9)]
+        self.currentWinner = None
+
     @staticmethod # Used because there is no need to pass in self
     def printBoardNums():
         """
@@ -100,7 +104,7 @@ class TicTacToe():
             letter = 'O' if letter == 'X' else 'X'
     
             time.sleep(1)
-
+            
         if printGame:
             print("It's a tie!")
 
@@ -112,6 +116,7 @@ class TicTacToe():
             userChoice = int(input("Play Tic-Tac-Toe?\n1. Play\n0. Exit "))
             cls()
             if userChoice == 1:
+                TicTacToe.clearBoard(self)
                 xPlayer = HumanPlayer('X')
                 oPlayer = ComputerPlayer('O')
                 t = TicTacToe()
