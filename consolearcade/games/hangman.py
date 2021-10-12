@@ -1,5 +1,6 @@
 import os # Used for clearing the console
 import string
+import time
 from random import randint, choice # Used to select an item from the words dictionary
 from dependencies import color, hangmanascii
 
@@ -48,10 +49,14 @@ class HangMan():
                 else:
                     chances -= 1 # If user guesses incorrectly, they lose a guess chance
                     print(color.Color.RED + "Letter is not in word!" + color.Color.END)
+                    time.sleep(1)
             elif userLetter in usedLetters:
                 print(color.Color.BLUE + "You have already used that letter." + color.Color.END)
+                time.sleep(1)
+
             else:
                 print(color.Color.BLUE + "Invalid selection." + color.Color.END)
+                time.sleep(1)
         if chances == 0:
             print(color.Color.RED + hangmanascii.hangmanL + color.Color.END) # Prints the corresponding Hangman ascii art
             print('')

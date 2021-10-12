@@ -10,7 +10,7 @@ class NumberGuesser():
 		cls()
 		userChoice = 1
 		while userChoice != 0:
-			userChoice = int(input(color.Color.BLUE + "Play guess the number!\n1. Play\n0. Exit" + color.Color.END))
+			userChoice = int(input(color.Color.BLUE + "Play guess the number!\n1. Play\n0. Exit " + color.Color.END))
 			cls()
 			if userChoice == 1:
 				self.guessTime()

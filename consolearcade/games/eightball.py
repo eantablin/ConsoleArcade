@@ -14,7 +14,7 @@ class EightBall():
 		# While user doesnt wanna leave
 		while userChoice != 0:
 
-			userChoice = int(input("Be illuminated by the EightBall\n1. Roll ball\n0. Exit"))
+			userChoice = int(input("Be illuminated by the EightBall\n1. Roll ball\n0. Exit "))
 
 			cls()
 			
