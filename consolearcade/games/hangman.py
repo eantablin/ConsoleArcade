@@ -57,6 +57,6 @@ class HangMan():
             print('')
             print(color.Color.RED + "You have lost. The correct word was, " + word + "."+ color.Color.END)
         else:
-            print(hangmanacsii.hangmanW) # Prints the corresponding Hangman acsii art
+            print(hangmanascii.hangmanW) # Prints the corresponding Hangman acsii art
             print('')
             print(color.Color.BLUE + "You have guessed the word, " + word +", correctly!"+ color.Color.END)
