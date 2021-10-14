@@ -191,7 +191,7 @@ class Player():
 		counter = 0
 		for i in self.inventory:
 			if i == itemToRemove:
-				self.inventory.pop(i)
+				self.inventory.remove(i)
 				return
 			counter += 1
 	
@@ -352,7 +352,7 @@ class RPGame():
 				cls()
 				## royalSound()
 
-				print(color.Color.PURPLE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + color.Color.END)
+				print(color.Color.BLUE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + color.Color.END)
 				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others\n" + color.Color.END))
 				
 				if classChoice == 1:
@@ -411,6 +411,7 @@ class RPGame():
 
 			elif userChoice == 2: # Inventory
 				self.displayInventory(player)
+				self.useItem(player)
 				
 
 
@@ -466,6 +467,7 @@ class RPGame():
 			
 			elif userChoice == 3: # Display satchel contents
 				self.displayInventory(player)
+				self.useItem(player)
 
 			elif userChoice == 4: # Attempt to flee
 				willFlee = randint(1,100)
@@ -516,7 +518,7 @@ class RPGame():
 
 		# TODO
 		# Properly implement displaying inventory
-		player.addinventory("apples")
+		player.addinventory("Apples")
 		inventory = player.getinventory()
 		inventoryLength = len(inventory)
 
@@ -528,3 +530,21 @@ class RPGame():
 			print("My satchel is empty.")
 
 		# print(f'player.')
+
+	def useItem(self, player):
+		userChoice = input(color.Color.DARKCYAN + "Which item will you use? " + color.Color.END)
+		inventory = player.getinventory()
+		if userChoice in inventory:
+			if userChoice == "Apples":
+				print(color.Color.DARKCYAN + "You eat the apples and recover some health" + color.Color.END)
+				sleep(1)
+				playerHP = player.changeHP(5)
+				player.removeinventory("Apples")
+			elif userChoice == "Health Potion":
+				print(color.Color.DARKCYAN + "You use the Health Potion and recover health" + color.Color.END)
+				sleep(1)
+				playerHP = player.changeHP(20)
+				player.removeinventory("Health Potion")
+			else:
+				print(color.Color.RED + "You don't have that item..." + color.Color.END)
+				sleep(1)
