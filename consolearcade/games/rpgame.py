@@ -1,5 +1,5 @@
 import os
-from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
+from random import randint, choice # Used for eightBall, numberGuesser, rockPaperScissors
 from dependencies import color
 from time import sleep
 
@@ -101,6 +101,29 @@ class Player():
 		if totalXP < 100: # Keep track of total XP
 			self.setXP(totalXP)
 		
+	# TODO: Currently capable of overhealing
+	# Is it a bug? No, it's a feature
+	# Make it so user can just pick item 0 or 1, etc..
+	# User might not expect to make an exact match for item	
+	def useItem(self):
+		userChoice = input(color.Color.DARKCYAN + "Which item will you use? " + color.Color.END)
+		inventory = self.getinventory()
+
+		if userChoice in inventory:
+			if userChoice == "Apples":
+				print(color.Color.DARKCYAN + "You eat the apples and recover some health" + color.Color.END)
+				self.changeCurrentHP(5)
+				self.removeinventory("Apples")
+				sleep(1)
+			elif userChoice == "Health Potion":
+				print(color.Color.DARKCYAN + "You use the Health Potion and recover health" + color.Color.END)
+				self.changeCurrentHP(20)
+				self.removeinventory("Health Potion")
+				sleep(1)
+			else:
+				print(color.Color.RED + "You don't have that item..." + color.Color.END)
+				sleep(1)
+	
 	def isAlive(self):
 		if self.currentHP > 0:
 			return True
@@ -282,7 +305,7 @@ class Buff(Item):
 	damage = 0
 	
 	mana = 0 # Mana Influx
-	managRegen = 0
+	manaRegen = 0
 
 
 	def createBuff(self, attribute):
@@ -411,10 +434,8 @@ class RPGame():
 
 			elif userChoice == 2: # Inventory
 				self.displayInventory(player)
-				self.useItem(player)
+				player.useItem()
 				
-
-
 			elif userChoice == 3: # Player stats
 				playerHP = player.getCurrentHP()
 				playerTotalHP = player.getHP()
@@ -531,20 +552,3 @@ class RPGame():
 
 		# print(f'player.')
 
-	def useItem(self, player):
-		userChoice = input(color.Color.DARKCYAN + "Which item will you use? " + color.Color.END)
-		inventory = player.getinventory()
-		if userChoice in inventory:
-			if userChoice == "Apples":
-				print(color.Color.DARKCYAN + "You eat the apples and recover some health" + color.Color.END)
-				sleep(1)
-				playerHP = player.changeHP(5)
-				player.removeinventory("Apples")
-			elif userChoice == "Health Potion":
-				print(color.Color.DARKCYAN + "You use the Health Potion and recover health" + color.Color.END)
-				sleep(1)
-				playerHP = player.changeHP(20)
-				player.removeinventory("Health Potion")
-			else:
-				print(color.Color.RED + "You don't have that item..." + color.Color.END)
-				sleep(1)
