@@ -297,31 +297,23 @@ class Item():
 	price = 0 # Item price
 	attribute = "" # Item type
 	rarity = 0 # Common, Rare, Heroic, Legendary
-
-
-class Buff(Item):
-	health = 0 # Healing
-	healthRegen = 0 # Heal Over Time
-	damage = 0
-	
-	mana = 0 # Mana Influx
-	manaRegen = 0
-
+	health = 0 # Direct healing
+	healthRegen = 0 # Heal over Time, HoT
+	mana = 0 # Mana intake
+	manaRegen = 0 # Mana intake over time, to prevent spell spamming, most common
+	autoDamage = 0 # Damage taken by using item
+	autoDamageOverTime = 0 # Damage taken by using item, over time
+	damage = 0 # Damage increase
+	damageOverTime = 0 # Attacks apply a DoT
 
 	def createBuff(self, attribute):
 		return
-
-
-# class Debuff(Item):
-
-# class Junk(Item):
-
-# class Equipment(Item):
-
-
-
-
-
+	def createDebuff(self, attribute):
+		return
+	def createJunk(self):
+		return
+	def createEquipment(self):
+		return
 
 class RPGame():
 	
