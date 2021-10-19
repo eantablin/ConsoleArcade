@@ -128,6 +128,7 @@ class Player():
 
 		# TODO
 		# Properly implement displaying inventory
+		cls()
 		self.addinventory("Apples")
 		inventory = self.getinventory()
 		inventoryLength = len(inventory)
@@ -313,25 +314,75 @@ class Item():
 	name = "" # Item name
 	price = 0 # Item price
 	attribute = "" # Item type
-	rarity = 0 # Common, Rare, Heroic, Legendary
-	health = 0 # Direct healing
-	healthRegen = 0 # Heal over Time, HoT
-	mana = 0 # Mana intake
-	manaRegen = 0 # Mana intake over time, to prevent spell spamming, most common
+	rarity = "" # Common, Rare, Heroic, Legendary
+	healthRegen = 0 # Direct healing
+	healthOverTime = 0 # Heal over Time, HoT
+	manaRegen = 0 # Mana intake
+	manaOverTime = 0 # Mana intake over time, to prevent spell spamming, most common
 	autoDamage = 0 # Damage taken by using item
 	autoDamageOverTime = 0 # Damage taken by using item, over time
 	damage = 0 # Damage increase
 	damageOverTime = 0 # Attacks apply a DoT
+	description = "" # Item lore/characteristics
+	canCook = False # Can item be cooked? # TODO: Properly implement me later
 
 	def createBuff(self):
-		return
+		ranNum = randint(1, 100)
+		self.attribute = "buff"
+
+		if ranNum <= 10: # Health Potion, 10% chance
+			self.name = "Health Potion"
+			self.price = 20
+			self.rarity = "Common"
+			self.healthRegen = 20
+			self.description = "This bottle has some heft to it, and a pungent smell"
+			self.canCook = False
+		elif ranNum <= 50 and ranNum > 10: # Apples, 40% chance
+			self.name = "Apples"
+			self.price = 5
+			self.rarity = "Common"
+			self.healthRegen = 5
+			self.description = "Red, crispy apple"
+			self.canCook = True
+		elif ranNum <= 80 and ranNum > 50: # Soup, 30% chance
+			self.name = "Soup"
+			self.price = 10
+			self.rarity = "Common"
+			self.healthRegen = 10
+			self.description = "A hearty soup stored in a jar, maybe it'd taste better cooked?"
+			self.canCook = True
+		elif ranNum <= 85 and ranNum > 80: # Mana potion, 5% chance
+			self.name = "Mana Potion"
+			self.price = 30
+			self.rarity = "Common"
+			self.manaRegen = 20
+			self.description = "Blue viscous liquid, is it looking at me?"
+			self.canCook = False
+		elif ranNum <= 90 and ranNum > 85: # Small Health Potion, 5% chance
+			self.name = "Small Health Potion"
+			self.price = 10
+			self.rarity = "Common"
+			self.healthRegen = 15
+			self.description = "Red tones in a small bottle, better not drop it"
+			self.canCook = False
+		elif ranNum <= 100 and ranNum > 90: # Small Mana Potion, 10% chance
+			self.name = "Small Mana Potion"
+			self.price = 15
+			self.rarity = "Common"
+			self.manaRegen = 10
+			self.description = "Blue tones in an oddly shaped triangular bottle"
+			self.canCook = False
+
 	def createDebuff(self):
+		self.attribute = "debuff"
 		return
 	def createJunk(self):
+		self.attribute = "junk"
 		return
 	def createEquipment(self):
+		self.attribute = "equipment"
 		return
-
+	
 class RPGame():
 	
 	isAlive = True # Game still running?
@@ -356,14 +407,14 @@ class RPGame():
 		
 		while self.isAlive == True: # While user hasn't decided to exit
 			cls()
-			userChoice = int(input(color.Color.DARKCYAN + "Pick a class\n\n1. Peasant\n2. Nobleman\n3. Royalty\n0. Exit\n" + color.Color.END))
+			userChoice = int(input(color.Color.DARKCYAN + "Pick a class\n\n1. Peasant\n2. Nobleman\n3. Royalty\n0. Exit\n\nChoice: " + color.Color.END))
 			
 			if userChoice == 1: # User might pick to be a peasant
 				cls()
 				## peasantSound()
 
 				print(color.Color.RED + "Due to years of backbreaking work, Caldria's peasants are known to have a high tolerance for even the most grueling of tasks.\n\n" + color.Color.END)
-				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Peasant\n0. No, let me check others\n" + color.Color.END))
+				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Peasant\n0. No, let me check others\n\nChoice: " + color.Color.END))
 				
 				if classChoice == 1:
 					player.classChoice(userChoice)
@@ -374,7 +425,7 @@ class RPGame():
 				## nobleSound()
 
 				print(color.Color.BLUE + "Born to a strong house with servants aplenty, the Caldrian noblemen are considered chivalrous and known to be healthy.\n\n" + color.Color.END)
-				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Nobleman\n0. No, let me check others\n" + color.Color.END))
+				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Nobleman\n0. No, let me check others\n\nChoice: " + color.Color.END))
 				
 				if classChoice == 1:
 					player.classChoice(userChoice)
@@ -385,7 +436,7 @@ class RPGame():
 				## royalSound()
 
 				print(color.Color.BLUE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + color.Color.END)
-				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others\n" + color.Color.END))
+				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others\n\nChoice: " + color.Color.END))
 				
 				if classChoice == 1:
 					player.classChoice(userChoice)
@@ -403,7 +454,7 @@ class RPGame():
 		while self.isAlive == True:
 			cls()
 			self.displayStats(player)
-			userChoice = int(input(color.Color.DARKCYAN + '1. Explore\n2. Inventory\n3. Stats\n0. Exit\n' + color.Color.END))
+			userChoice = int(input(color.Color.DARKCYAN + '1. Explore\n2. Inventory\n3. Stats\n0. Exit\n\nChoice: ' + color.Color.END))
 
 			
 			if userChoice == 1: # Explore
@@ -435,6 +486,9 @@ class RPGame():
 						return 
 						
 					elif encounter > 5: # ATM should have 2 rolls in 7, 28.57% chance
+						cls()
+						print("There's something up ahead")
+						sleep(1)
 						self.combat(player)
 						return
 
@@ -479,7 +533,7 @@ class RPGame():
 			self.displayCombatStats(player, combatMP, combatEnergy)
 			self.displayEnemyStats(opponent)
 
-			userChoice = input(color.Color.RED + f"{opponent.className}: {opponent.catchPhrase}\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n4. Flee\n0. Exit\n" + color.Color.END)
+			userChoice = input(color.Color.RED + f"{opponent.className}: {opponent.catchPhrase}\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n4. Flee\n0. Exit\n\nChoice: " + color.Color.END)
 			userChoice = int(userChoice)
 
 			if userChoice == 1: # Standard attack
@@ -525,8 +579,14 @@ class RPGame():
 			# 	player.inventory.append(opponent.)
 
 		if player.isAlive() == True and opponent.isAlive() == False:
+			# TODO: Help me work
+			# i = Item()
+			# i.createBuff()
+			# player.addinventory(i)
+			print("There's something on the ground")
 			player.addinventory("Health Potion")
 			player.checklevelUP(opponent.getXP())
+			sleep(1)
 
 
 

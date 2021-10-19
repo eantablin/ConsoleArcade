@@ -25,7 +25,7 @@ def main():
 		cls()
 		# sound.play_effect('digital:HighDown')
 		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. NumberGuesser -- Stable\n4. RockPaperScissors -- Stable\n5. HangMan -- Stable\n6. TicTacToe -- In Progress\n7. Load Save -- TBD\n0. Exit")
-		gameChoice = int(input())
+		gameChoice = int(input('\nChoice: '))
 		
 		if gameChoice == 1: # Run RPG
 			game = rpgame.RPGame()
