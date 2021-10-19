@@ -1,5 +1,5 @@
 import os
-from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
+from random import randint, choice # Used for eightBall, numberGuesser, rockPaperScissors
 from dependencies import color
 from time import sleep
 
@@ -71,21 +71,21 @@ class Player():
 		while totalXP >= 100:
 
 			if self.className == "Peasant": 
-				self.setHP(self.getHP() + 10)
+				self.setMaxHP(self.getMaxHP() + 10)
 				self.setStam(self.getStam() + 6)
 				self.setMana(self.getMana() + 5)
 				self.setDMG(self.getDMG() + 5)
 				# Total = 26
 				
 			elif self.className == "Nobleman":
-				self.setHP(self.getHP() + 4)
+				self.setMaxHP(self.getMaxHP() + 4)
 				self.setStam(self.getStam() + 4)
 				self.setMana(self.getMana() + 8)
 				self.setDMG(self.getDMG() + 3)
 				# Total = 19
 			
 			elif self.className == "Royalty":
-				self.setHP(self.getHP() + 2)
+				self.setMaxHP(self.getMaxHP() + 2)
 				self.setStam(self.getStam() + 3)
 				self.setMana(self.getMana() + 10)
 				self.setDMG(self.getDMG() + 1)
@@ -101,6 +101,29 @@ class Player():
 		if totalXP < 100: # Keep track of total XP
 			self.setXP(totalXP)
 		
+	# TODO: Currently capable of overhealing
+	# Is it a bug? No, it's a feature
+	# Make it so user can just pick item 0 or 1, etc..
+	# User might not expect to make an exact match for item	
+	def useItem(self):
+		userChoice = input(color.Color.DARKCYAN + "Which item will you use? " + color.Color.END)
+		inventory = self.getinventory()
+
+		if userChoice in inventory:
+			if userChoice == "Apples":
+				print(color.Color.DARKCYAN + "You eat the apples and recover some health" + color.Color.END)
+				self.changeCurrentHP(5)
+				self.removeinventory("Apples")
+				sleep(1)
+			elif userChoice == "Health Potion":
+				print(color.Color.DARKCYAN + "You use the Health Potion and recover health" + color.Color.END)
+				self.changeCurrentHP(20)
+				self.removeinventory("Health Potion")
+				sleep(1)
+			else:
+				print(color.Color.RED + "You don't have that item..." + color.Color.END)
+				sleep(1)
+	
 	def isAlive(self):
 		if self.currentHP > 0:
 			return True
@@ -126,11 +149,11 @@ class Player():
 		self.xp += value
 		
 	# Total HP Functionality
-	def getHP(self):
+	def getMaxHP(self):
 		return self.health
-	def setHP(self, value):
+	def setMaxHP(self, value):
 		self.health = value
-	def changeHP(self, value):
+	def changeMaxHP(self, value):
 		self.health += value
 
 	# Current HP Functionality
@@ -274,31 +297,23 @@ class Item():
 	price = 0 # Item price
 	attribute = "" # Item type
 	rarity = 0 # Common, Rare, Heroic, Legendary
+	health = 0 # Direct healing
+	healthRegen = 0 # Heal over Time, HoT
+	mana = 0 # Mana intake
+	manaRegen = 0 # Mana intake over time, to prevent spell spamming, most common
+	autoDamage = 0 # Damage taken by using item
+	autoDamageOverTime = 0 # Damage taken by using item, over time
+	damage = 0 # Damage increase
+	damageOverTime = 0 # Attacks apply a DoT
 
-
-class Buff(Item):
-	health = 0 # Healing
-	healthRegen = 0 # Heal Over Time
-	damage = 0
-	
-	mana = 0 # Mana Influx
-	managRegen = 0
-
-
-	def createBuff(self, attribute):
+	def createBuff(self):
 		return
-
-
-# class Debuff(Item):
-
-# class Junk(Item):
-
-# class Equipment(Item):
-
-
-
-
-
+	def createDebuff(self):
+		return
+	def createJunk(self):
+		return
+	def createEquipment(self):
+		return
 
 class RPGame():
 	
@@ -377,30 +392,30 @@ class RPGame():
 				
 				while userChoice != 0 or player.isAlive == True:
 					encounter = randint(1, 7)
-					if encounter == 1:
+					if encounter == 1: # Encounter stranger
 						print("Stranger says hi")
 						sleep(1)
 						return
-						# Encounter stranger
-					elif encounter == 2:
+
+					elif encounter == 2: # Traveling merchant
 						print("A merchant has set up shop across the road")
 						sleep(1)
 						return 
-						# Traveling merchant
-					elif encounter == 3:
+						
+					elif encounter == 3: # Find treasure
 						print("I found a chest!")
 						player.addinventory("Health Potion")
 						sleep(1)
 						return 
-						# Find treasure
-					elif encounter == 4: 
+						
+					elif encounter == 4: # Dungeon time
 						print("That cave looks interesting, maybe I should go in")
 						sleep(1)
 						return 
-						# Dungeon time
-					elif encounter == 5:
+						
+					elif encounter == 5: # Found a Town
 						return 
-						# Found a Town
+						
 					elif encounter > 5: # ATM should have 2 rolls in 7, 28.57% chance
 						self.combat(player)
 						return
@@ -411,13 +426,11 @@ class RPGame():
 
 			elif userChoice == 2: # Inventory
 				self.displayInventory(player)
-				self.useItem(player)
+				player.useItem()
 				
-
-
 			elif userChoice == 3: # Player stats
 				playerHP = player.getCurrentHP()
-				playerTotalHP = player.getHP()
+				playerTotalHP = player.getMaxHP()
 				if playerHP >= playerTotalHP * .75: # Top 75% of hp
 					print(color.Color.DARKCYAN + "I'll be fine" + color.Color.END)
 				elif playerHP >= playerTotalHP * .50 and playerHP < playerTotalHP * .75: # Between 50 - 75%
@@ -467,7 +480,7 @@ class RPGame():
 			
 			elif userChoice == 3: # Display satchel contents
 				self.displayInventory(player)
-				self.useItem(player)
+				player.useItem()
 
 			elif userChoice == 4: # Attempt to flee
 				willFlee = randint(1,100)
@@ -502,16 +515,16 @@ class RPGame():
 
 	# Rewrite me after Enemy class remake
 	def displayEnemyStats(self, Enemy): # Show enemy stats
-		print(color.Color.DARKCYAN + f'{Enemy.className} - HP: {Enemy.getCurrentHP()}/{Enemy.getHP()}')
+		print(color.Color.DARKCYAN + f'{Enemy.className} - HP: {Enemy.getCurrentHP()}/{Enemy.getMaxHP()}')
 
 	def displayCombatStats(self, player, mana, stamina): # Keep track of current combat stats
-		print(color.Color.DARKCYAN + f'{player.className} - HP: {player.getCurrentHP()}/{player.getHP()} | MP: {mana}/{player.getMana()} | EN: {stamina}/{player.getStam()}\n' + color.Color.END)
+		print(color.Color.DARKCYAN + f'{player.className} - HP: {player.getCurrentHP()}/{player.getMaxHP()} | MP: {mana}/{player.getMana()} | EN: {stamina}/{player.getStam()}\n' + color.Color.END)
 	
 	def displayStats(self, player): # For most menus
-		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()} | XP: {player.getXP()}\n ' + color.Color.END)
+		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getMaxHP()} | MP: {player.getMana()} | XP: {player.getXP()}\n ' + color.Color.END)
 	
 	def displayFullStats(self, player): # For when user wants/needs to see their total stats
-		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n' + color.Color.END)
+		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getMaxHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n' + color.Color.END)
 		
 	
 	def displayInventory(self, player):
@@ -531,20 +544,3 @@ class RPGame():
 
 		# print(f'player.')
 
-	def useItem(self, player):
-		userChoice = input(color.Color.DARKCYAN + "Which item will you use? " + color.Color.END)
-		inventory = player.getinventory()
-		if userChoice in inventory:
-			if userChoice == "Apples":
-				print(color.Color.DARKCYAN + "You eat the apples and recover some health" + color.Color.END)
-				sleep(1)
-				playerHP = player.changeHP(5)
-				player.removeinventory("Apples")
-			elif userChoice == "Health Potion":
-				print(color.Color.DARKCYAN + "You use the Health Potion and recover health" + color.Color.END)
-				sleep(1)
-				playerHP = player.changeHP(20)
-				player.removeinventory("Health Potion")
-			else:
-				print(color.Color.RED + "You don't have that item..." + color.Color.END)
-				sleep(1)
