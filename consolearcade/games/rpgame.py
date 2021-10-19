@@ -123,6 +123,23 @@ class Player():
 			else:
 				print(color.Color.RED + "You don't have that item..." + color.Color.END)
 				sleep(1)
+
+	def displayInventory(self):
+
+		# TODO
+		# Properly implement displaying inventory
+		self.addinventory("Apples")
+		inventory = self.getinventory()
+		inventoryLength = len(inventory)
+
+		if inventoryLength > 0: # If there's something in inventory
+			for i in inventory: # Loop through it's entirety
+				print(color.Color.DARKCYAN + f"{i}" + color.Color.END) # Output each slot
+
+		else: # Empty satchel
+			print("My satchel is empty.")
+
+		# print(f'player.')
 	
 	def isAlive(self):
 		if self.currentHP > 0:
@@ -384,9 +401,10 @@ class RPGame():
 		cls()
 		
 		while self.isAlive == True:
+			cls()
 			self.displayStats(player)
 			userChoice = int(input(color.Color.DARKCYAN + '1. Explore\n2. Inventory\n3. Stats\n0. Exit\n' + color.Color.END))
-			cls()
+
 			
 			if userChoice == 1: # Explore
 				
@@ -425,7 +443,7 @@ class RPGame():
 
 
 			elif userChoice == 2: # Inventory
-				self.displayInventory(player)
+				player.displayInventory()
 				player.useItem()
 				
 			elif userChoice == 3: # Player stats
@@ -479,7 +497,7 @@ class RPGame():
 					player.currentHP -= opponent.getDMG()
 			
 			elif userChoice == 3: # Display satchel contents
-				self.displayInventory(player)
+				player.displayInventory()
 				player.useItem()
 
 			elif userChoice == 4: # Attempt to flee
@@ -525,22 +543,5 @@ class RPGame():
 	
 	def displayFullStats(self, player): # For when user wants/needs to see their total stats
 		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getMaxHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n' + color.Color.END)
-		
-	
-	def displayInventory(self, player):
 
-		# TODO
-		# Properly implement displaying inventory
-		player.addinventory("Apples")
-		inventory = player.getinventory()
-		inventoryLength = len(inventory)
-
-		if inventoryLength > 0: # If there's something in inventory
-			for i in inventory: # Loop through it's entirety
-				print(color.Color.DARKCYAN + f"{i}" + color.Color.END) # Output each slot
-
-		else: # Empty satchel
-			print("My satchel is empty.")
-
-		# print(f'player.')
 
