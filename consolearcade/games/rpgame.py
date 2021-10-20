@@ -106,23 +106,77 @@ class Player():
 	# Make it so user can just pick item 0 or 1, etc..
 	# User might not expect to make an exact match for item	
 	def useItem(self):
-		userChoice = input(color.Color.DARKCYAN + "Which item will you use? " + color.Color.END)
-		inventory = self.getinventory()
 
-		if userChoice in inventory:
-			if userChoice == "Apples":
-				print(color.Color.DARKCYAN + "You eat the apples and recover some health" + color.Color.END)
-				self.changeCurrentHP(5)
-				self.removeinventory("Apples")
+		'''
+		1) Apples
+		2) Tomatoes
+		3) Health Potion
+
+		Choice: 
+		'''
+		userChoice = ""
+
+		while userChoice != 0:  # While user isn't done scrounging around inventory
+			# TODO
+			# Properly implement displaying inventory
+			cls() # Reset screen
+			it = Item()
+			it.createBuff()
+			
+			self.addinventory(it) # Testing if items work
+			inventory = self.getinventory()
+			inventoryLength = len(inventory)
+
+			counter = 1 # Display items from 1..N, skipping 0 due to exit condition
+
+			if inventoryLength > 0: # If there's something in inventory
+				for i in inventory: # Loop through it's entirety
+					print(color.Color.DARKCYAN + f"{counter}) {i.name}" + color.Color.END) # Output each slot
+					counter += 1 # Increase reference value by 1
+			
+
+			else: # Empty satchel, break out of loop
+				print("My satchel is empty.")
 				sleep(1)
-			elif userChoice == "Health Potion":
-				print(color.Color.DARKCYAN + "You use the Health Potion and recover health" + color.Color.END)
-				self.changeCurrentHP(20)
-				self.removeinventory("Health Potion")
-				sleep(1)
+				break
+				
+			print("0) Exit\n")
+
+			# Item usage below
+			userChoice = int(input(color.Color.DARKCYAN + "Which item will you use?\n\nChoice: " + color.Color.END))
+
+			if userChoice != 0:
+				currItem = inventory[userChoice-1] # -1 to account for 0 consistently being exit condition
+			else: 
+				break
+
+			# Confirming Item usage
+			cls()
+			confirmChoice = int(input(f"Use {currItem.name}?\n\n1) Yes\n0) No\n\nChoice: "))
+			# TODO: Change item action dependant on it's strengths; i.e: Healing items will change hp, mana MP, etc..
+			if confirmChoice == 1:
+				self.changeCurrentHP(currItem.healthRegen) #
+				del inventory[userChoice-1]
 			else:
-				print(color.Color.RED + "You don't have that item..." + color.Color.END)
-				sleep(1)
+				userChoice = ""
+				continue
+			# print(inventory[userChoice])
+
+
+			# if userChoice in inventory:
+			# 	if userChoice == "Apples":
+			# 		print(color.Color.DARKCYAN + "You eat the apples and recover some health" + color.Color.END)
+			# 		self.changeCurrentHP(5)
+			# 		self.removeinventory("Apples")
+			# 		sleep(1)
+			# 	elif userChoice == "Health Potion":
+			# 		print(color.Color.DARKCYAN + "You use the Health Potion and recover health" + color.Color.END)
+			# 		self.changeCurrentHP(20)
+			# 		self.removeinventory("Health Potion")
+			# 		sleep(1)
+			# 	else:
+			# 		print(color.Color.RED + "You don't have that item..." + color.Color.END)
+			# 		sleep(1)
 
 	def displayInventory(self):
 
@@ -132,10 +186,12 @@ class Player():
 		self.addinventory("Apples")
 		inventory = self.getinventory()
 		inventoryLength = len(inventory)
+		counter = 1
 
 		if inventoryLength > 0: # If there's something in inventory
 			for i in inventory: # Loop through it's entirety
-				print(color.Color.DARKCYAN + f"{i}" + color.Color.END) # Output each slot
+				print(color.Color.DARKCYAN + f"{counter}) {i}" + color.Color.END) # Output each slot
+				counter += 1
 
 		else: # Empty satchel
 			print("My satchel is empty.")
@@ -473,7 +529,8 @@ class RPGame():
 						
 					elif encounter == 3: # Find treasure
 						print("I found a chest!")
-						player.addinventory("Health Potion")
+						# player.addinventory("Health Potion")
+						# TODO: Properly get player an extra item
 						sleep(1)
 						return 
 						
@@ -497,7 +554,7 @@ class RPGame():
 
 
 			elif userChoice == 2: # Inventory
-				player.displayInventory()
+				# player.displayInventory()
 				player.useItem()
 				
 			elif userChoice == 3: # Player stats
@@ -551,7 +608,7 @@ class RPGame():
 					player.currentHP -= opponent.getDMG()
 			
 			elif userChoice == 3: # Display satchel contents
-				player.displayInventory()
+				# player.displayInventory()
 				player.useItem()
 
 			elif userChoice == 4: # Attempt to flee
@@ -584,7 +641,8 @@ class RPGame():
 			# i.createBuff()
 			# player.addinventory(i)
 			print("There's something on the ground")
-			player.addinventory("Health Potion")
+			# player.addinventory("Health Potion")
+			# TODO: Properly give player an item
 			player.checklevelUP(opponent.getXP())
 			sleep(1)
 
