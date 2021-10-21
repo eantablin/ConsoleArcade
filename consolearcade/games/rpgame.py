@@ -120,10 +120,13 @@ class Player():
 			# TODO
 			# Properly implement displaying inventory
 			cls() # Reset screen
+
+			 # Testing if items work
 			it = Item()
 			it.createBuff()
-			
-			self.addinventory(it) # Testing if items work
+			self.addinventory(it)
+
+			# Hold current inventory and it's size
 			inventory = self.getinventory()
 			inventoryLength = len(inventory)
 
@@ -133,15 +136,14 @@ class Player():
 				for i in inventory: # Loop through it's entirety
 					print(color.Color.DARKCYAN + f"{counter}) {i.name}" + color.Color.END) # Output each slot
 					counter += 1 # Increase reference value by 1
-			
+
+				print("0) Exit\n")
 
 			else: # Empty satchel, break out of loop
 				print("My satchel is empty.")
 				sleep(1)
 				break
 				
-			print("0) Exit\n")
-
 			# Item usage below
 			userChoice = int(input(color.Color.DARKCYAN + "Which item will you use?\n\nChoice: " + color.Color.END))
 
@@ -357,11 +359,8 @@ class Enemy(Player):
 # Make merchant class, a store that the user can interact with even choose to attack or just attempt to steal (penalty of buffing enemy/free dmg)
 class Merchant(Player):
 	
-
 	def encounter(self, player: Player): # Unluckily run into player
 		cls() # Clean console
-		
-
 
 	def exist(self): # Object comes to initial existance
 		ranNum = randint(1, 100)
@@ -371,6 +370,7 @@ class Item():
 	price = 0 # Item price
 	attribute = "" # Item type
 	rarity = "" # Common, Rare, Heroic, Legendary
+	description = "" # Item lore/characteristics
 	healthRegen = 0 # Direct healing
 	healthOverTime = 0 # Heal over Time, HoT
 	manaRegen = 0 # Mana intake
@@ -379,7 +379,6 @@ class Item():
 	autoDamageOverTime = 0 # Damage taken by using item, over time
 	damage = 0 # Damage increase
 	damageOverTime = 0 # Attacks apply a DoT
-	description = "" # Item lore/characteristics
 	canCook = False # Can item be cooked? # TODO: Properly implement me later
 
 	def createBuff(self):
@@ -455,6 +454,18 @@ class RPGame():
 			# Adventure time
 			self.adventure(player)
 			# TODO implement timer, 1-2 seconds
+
+		if player.currentHP <= 0:
+			counter = 0
+			while counter < 10: # Death screen lasts 5 seconds
+				cls()
+				print(color.Color.RED + "YOU DIED")
+				sleep(0.2)
+				cls()
+				print(color.Color.BOLD + "YOU DIED" + color.Color.END)
+				sleep(0.3)
+				counter += 1
+
 		
 		return
 	
