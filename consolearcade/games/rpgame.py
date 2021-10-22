@@ -121,10 +121,10 @@ class Player():
 			# Properly implement displaying inventory
 			cls() # Reset screen
 
-			 # Testing if items work
-			it = Item()
-			it.createBuff()
-			self.addinventory(it)
+			# Test if items work
+			# it = Item()
+			# it.createBuff()
+			# self.addinventory(it)
 
 			# Hold current inventory and it's size
 			inventory = self.getinventory()
@@ -180,25 +180,6 @@ class Player():
 			# 		print(color.Color.RED + "You don't have that item..." + color.Color.END)
 			# 		sleep(1)
 
-	def displayInventory(self):
-
-		# TODO
-		# Properly implement displaying inventory
-		cls()
-		self.addinventory("Apples")
-		inventory = self.getinventory()
-		inventoryLength = len(inventory)
-		counter = 1
-
-		if inventoryLength > 0: # If there's something in inventory
-			for i in inventory: # Loop through it's entirety
-				print(color.Color.DARKCYAN + f"{counter}) {i}" + color.Color.END) # Output each slot
-				counter += 1
-
-		else: # Empty satchel
-			print("My satchel is empty.")
-
-		# print(f'player.')
 	
 	def isAlive(self):
 		if self.currentHP > 0:
@@ -285,6 +266,8 @@ class Player():
 		self.inventory = value
 	def addinventory(self, value):
 		self.inventory.append(value)
+
+	# Currently not being used
 	def removeinventory(self, itemToRemove): # self, value to remove
 		# TODO: OPTIMIZE ME!
 		counter = 0
@@ -455,16 +438,18 @@ class RPGame():
 			self.adventure(player)
 			# TODO implement timer, 1-2 seconds
 
-		if player.currentHP <= 0:
-			counter = 0
-			while counter < 10: # Death screen lasts 5 seconds
-				cls()
-				print(color.Color.RED + "YOU DIED")
-				sleep(0.2)
-				cls()
-				print(color.Color.BOLD + "YOU DIED" + color.Color.END)
-				sleep(0.3)
-				counter += 1
+			if player.currentHP <= 0:
+				counter = 0
+				while counter < 10: # Death screen lasts 5 seconds
+					cls()
+					print(color.Color.RED + "YOU DIED")
+					sleep(0.2)
+					cls()
+					print(color.Color.BOLD + "YOU DIED" + color.Color.END)
+					sleep(0.3)
+					counter += 1
+
+				break
 
 		
 		return
@@ -529,28 +514,72 @@ class RPGame():
 				while userChoice != 0 or player.isAlive == True:
 					encounter = randint(1, 7)
 					if encounter == 1: # Encounter stranger
+						cls()
 						print("Stranger says hi")
+						# TODO: Make stranger interaction
+						# Can be a fight, someone with a gift
+						# Or they can have important information
+						# Allowing one of the players stats to improve
 						sleep(1)
 						return
 
 					elif encounter == 2: # Traveling merchant
+						cls()
 						print("A merchant has set up shop across the road")
+						merchant = Merchant() # Initialize merchant
+						# TODO: Make merchant interaction
+						# Being a child of player class, merchant should onCreate
+						# be provided with a selection of 5-10 items
+						# which reset every time player sees them
 						sleep(1)
+						del merchant # Goodbye merchant, we encounter different/new ones on the road
 						return 
 						
 					elif encounter == 3: # Find treasure
+						cls()
+						# TODO: add item variety
+						# Maybe there's more than 1 item in there
+						# OR maybe the chest is rigged: a trap!
+						print("There's a mound in the distance\n")
+						sleep(2)
+						print(color.Color().BROWN + color.Color().FAINT + "*panting*\n" + color.Color().END)
 						print("I found a chest!")
-						# player.addinventory("Health Potion")
-						# TODO: Properly get player an extra item
-						sleep(1)
+						sleep(1.5)
+						it = Item()
+						it.createBuff()
+						player.addinventory(it)
+						cls()
+						print(f"Nice, a {it.name}. Should come in handy")
+						sleep(1.8)
 						return 
 						
 					elif encounter == 4: # Dungeon time
+						cls()
+						# TODO: Make a dungeon system
+						# Higher likelihood of treasure
+						# Higher likelihood of combat
+						# -- Lower odds of fleeing
+						# Lower likelihood of merchant
+						# Lower likelihood of stranger
+						# -- Higher odds of being negative to player
+						
 						print("That cave looks interesting, maybe I should go in")
 						sleep(1)
 						return 
 						
 					elif encounter == 5: # Found a Town
+						cls()
+						# TODO: Extra encounters can be found in town
+						# If alleyway: oddsOfCombat++
+						# else: oddsOfCombat == 5%
+						# Implement barbershop: Can heal, or give damage buff
+						# damage buff until we implement defenses (armor/shields)
+						# Market, a bunch of merchants who the player can jump from and come back to
+						# Blacksmith, buy or sell equipment
+						# Later on: different types of town
+						# Monster/Smithing capital/Merchant city/Hospital/Farmers
+						print("A town? Didn't think I'd run into one for a while")
+						sleep(2)
 						return 
 						
 					elif encounter > 5: # ATM should have 2 rolls in 7, 28.57% chance
@@ -633,6 +662,8 @@ class RPGame():
 				
 				else: # On fail, opponent gets free hit; just git gud
 					player.currentHP -= opponent.getDMG()
+					print(f"{opponent.className}: No escape!")
+					sleep(1)
 
 			
 			elif userChoice == 0:
@@ -651,11 +682,14 @@ class RPGame():
 			# i = Item()
 			# i.createBuff()
 			# player.addinventory(i)
-			print("There's something on the ground")
-			# player.addinventory("Health Potion")
-			# TODO: Properly give player an item
+			print("There's something on the ground\n")
+			sleep(1.5)
+			it = Item()
+			it.createBuff()
+			player.addinventory(it)
+			print(f"A {it.name}, nice")
 			player.checklevelUP(opponent.getXP())
-			sleep(1)
+			sleep(2)
 
 
 
