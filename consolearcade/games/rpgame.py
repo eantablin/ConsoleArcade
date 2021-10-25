@@ -364,6 +364,9 @@ class Item():
 	damageOverTime = 0 # Attacks apply a DoT
 	canCook = False # Can item be cooked? # TODO: Properly implement me later
 
+	def items(self):
+		itemsList = ["Health Potion", "Apples", "Soup", "Mana Potion", "Small Health Potion", "Small Mana Potion"]
+
 	def createBuff(self):
 		ranNum = randint(1, 100)
 		self.attribute = "buff"
@@ -531,6 +534,7 @@ class RPGame():
 						# Being a child of player class, merchant should onCreate
 						# be provided with a selection of 5-10 items
 						# which reset every time player sees them
+						print("Ah, hello my friend. Care to buy something? I have many fine wares for you today.")
 						sleep(1)
 						del merchant # Goodbye merchant, we encounter different/new ones on the road
 						return 
@@ -602,14 +606,19 @@ class RPGame():
 				playerTotalHP = player.getMaxHP()
 				if playerHP >= playerTotalHP * .75: # Top 75% of hp
 					print(color.Color.DARKCYAN + "I'll be fine" + color.Color.END)
+					sleep(1)
 				elif playerHP >= playerTotalHP * .50 and playerHP < playerTotalHP * .75: # Between 50 - 75%
 					print(color.Color.DARKCYAN + "Some cuts and bruises, I'm otherwise okay" + color.Color.END)
+					sleep(1)
 				elif playerHP >= playerTotalHP * .25 and playerHP < playerTotalHP * .50: # Between 25 - 50%
 					print(color.Color.DARKCYAN + "I'll need healing soon" + color.Color.END)
+					sleep(1)
 				elif playerHP >= playerTotalHP * .1 and playerHP < playerTotalHP * .25: # Between 1-25%
 					print(color.Color.DARKCYAN + "Need healing, I might not make it" + color.Color.END)
+					sleep(1)
 				else:
 					print(color.Color.DARKCYAN + "I could use some healing" + color.Color.END)
+					sleep(1)
 			elif userChoice == 0: # Exit game
 				self.isAlive = False
 
