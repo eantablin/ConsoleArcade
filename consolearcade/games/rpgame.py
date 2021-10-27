@@ -427,12 +427,14 @@ class Item():
 class RPGame():
 	
 	isAlive = True # Game still running?
-	
-	def startGame(self, player):
+
+
+	def startGame(self):
 		
 		# Game setup
 		cls()
 		# sound.play_effect('game:Click_1')
+		player = Player() # Initialize player
 		self.characterChoice(player)
 		
 		while self.isAlive == True and player.currentHP > 0:
@@ -451,6 +453,7 @@ class RPGame():
 					print(color.Color.BOLD + "YOU DIED" + color.Color.END)
 					sleep(0.3)
 					counter += 1
+					del player # Delete player object
 
 				break
 

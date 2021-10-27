@@ -29,9 +29,8 @@ def main():
 		
 		if gameChoice == 1: # Run RPG
 			game = rpgame.RPGame()
-			player = rpgame.Player()
-			game.startGame(player)
-			del game, player
+			game.startGame()
+			del game
 
 
 		elif gameChoice == 2: # Run EightBall
