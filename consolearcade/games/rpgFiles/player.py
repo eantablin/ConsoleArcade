@@ -1,4 +1,7 @@
 import os
+from dependencies import color
+from time import sleep
+
 cls = lambda: os.system('clear') # Clear Console
 
 class Player():

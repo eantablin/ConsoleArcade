@@ -1,3 +1,5 @@
+from random import randint
+
 class Item():
 	name = "" # Item name
 	price = 0 # Item price

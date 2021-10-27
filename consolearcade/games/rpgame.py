@@ -2,14 +2,17 @@ import os
 from random import randint, choice # Used for eightBall, numberGuesser, rockPaperScissors
 from dependencies import color
 from time import sleep
-from games.rpgFiles import player, enemy, merchant, item
+from games.rpgFiles.player import Player
+from games.rpgFiles.enemy import Enemy
+from games.rpgFiles.merchant import Merchant
+from games.rpgFiles.item import Item
 
 cls = lambda: os.system('clear') # Clear Console
 
 class RPGame():
 	
 	isAlive = True # Game still running?
-	player = player.Player() # Initialize player
+
 
 
 	def startGame(self):
@@ -17,16 +20,16 @@ class RPGame():
 		# Game setup
 		cls()
 		# sound.play_effect('game:Click_1')
+		player = Player() # Initialize player
+		self.characterChoice(player)
 		
-		self.characterChoice(self.player)
-		
-		while self.isAlive == True and self.player.currentHP > 0:
+		while self.isAlive == True and player.currentHP > 0:
 
 			# Adventure time
-			self.adventure(self.player)
+			self.adventure(player)
 			# TODO implement timer, 1-2 seconds
 
-			if self.player.currentHP <= 0:
+			if player.currentHP <= 0:
 				counter = 0
 				while counter < 10: # Death screen lasts 5 seconds
 					cls()
@@ -36,7 +39,6 @@ class RPGame():
 					print(color.Color.BOLD + "YOU DIED" + color.Color.END)
 					sleep(0.3)
 					counter += 1
-					del self.player # Delete player object
 
 				break
 
@@ -58,7 +60,7 @@ class RPGame():
 				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Peasant\n0. No, let me check others\n\nChoice: " + color.Color.END))
 				
 				if classChoice == 1:
-					self.player.classChoice(userChoice)
+					player.classChoice(userChoice)
 					return
 
 			elif userChoice == 2: # User might choose a nobleman
@@ -69,18 +71,18 @@ class RPGame():
 				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Nobleman\n0. No, let me check others\n\nChoice: " + color.Color.END))
 				
 				if classChoice == 1:
-					self.player.classChoice(userChoice)
+					player.classChoice(userChoice)
 					return
 			
 			elif userChoice == 3: # Perhaps user went for royalty
 				cls()
 				## royalSound()
 
-				print(color.Color.BLUE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + color.Color.END)
+				print(color.Color.PURPLE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + color.Color.END)
 				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others\n\nChoice: " + color.Color.END))
 				
 				if classChoice == 1:
-					self.player.classChoice(userChoice)
+					player.classChoice(userChoice)
 					return
 					 	
 			elif userChoice == 0:
@@ -94,13 +96,13 @@ class RPGame():
 		
 		while self.isAlive == True:
 			cls()
-			self.displayStats(self.player)
+			self.displayStats(player)
 			userChoice = int(input(color.Color.DARKCYAN + '1. Explore\n2. Inventory\n3. Stats\n0. Exit\n\nChoice: ' + color.Color.END))
 
 			
 			if userChoice == 1: # Explore
 				
-				while userChoice != 0 or self.player.isAlive == True:
+				while userChoice != 0 or player.isAlive == True:
 					encounter = randint(1, 7)
 					if encounter == 1: # Encounter stranger
 						cls()
@@ -109,19 +111,19 @@ class RPGame():
 						# Can be a fight, someone with a gift
 						# Or they can have important information
 						# Allowing one of the players stats to improve
-						sleep(1)
+						sleep(1.5)
 						return
 
 					elif encounter == 2: # Traveling merchant
 						cls()
 						print("A merchant has set up shop across the road")
-						merchant = merchant.Merchant() # Initialize merchant
+						merchant = Merchant() # Initialize merchant
 						# TODO: Make merchant interaction
 						# Being a child of player class, merchant should onCreate
 						# be provided with a selection of 5-10 items
 						# which reset every time player sees them
 						print("Ah, hello my friend. Care to buy something? I have many fine wares for you today.")
-						sleep(1)
+						sleep(1.5)
 						del merchant # Goodbye merchant, we encounter different/new ones on the road
 						return 
 						
@@ -133,12 +135,12 @@ class RPGame():
 						print("There's a mound in the distance\n")
 						sleep(2)
 						print(color.Color().BROWN + color.Color().FAINT + "*panting*\n" + color.Color().END)
+						sleep(1.2)
 						print("I found a chest!")
 						sleep(1.5)
 						it = Item()
 						it.createBuff()
-						self.player.addinventory(it)
-						cls()
+						player.addinventory(it)
 						print(f"Nice, a {it.name}. Should come in handy")
 						sleep(1.8)
 						return 
@@ -176,7 +178,7 @@ class RPGame():
 						cls()
 						print("There's something up ahead")
 						sleep(1)
-						self.combat(self.player)
+						self.combat(player)
 						return
 
 				# In order of priority
@@ -185,21 +187,21 @@ class RPGame():
 
 			elif userChoice == 2: # Inventory
 				# player.displayInventory()
-				self.player.useItem()
+				player.useItem()
 				
-			elif userChoice == 3: # self.player stats
-				self.playerHP = self.player.getCurrentHP()
-				self.playerTotalHP = self.player.getMaxHP()
-				if self.playerHP >= self.playerTotalHP * .75: # Top 75% of hp
+			elif userChoice == 3: # player stats
+				playerHP = player.getCurrentHP()
+				playerTotalHP = player.getMaxHP()
+				if playerHP >= playerTotalHP * .75: # Top 75% of hp
 					print(color.Color.DARKCYAN + "I'll be fine" + color.Color.END)
 					sleep(1)
-				elif self.playerHP >= self.playerTotalHP * .50 and self.playerHP < self.playerTotalHP * .75: # Between 50 - 75%
+				elif playerHP >= playerTotalHP * .50 and playerHP < playerTotalHP * .75: # Between 50 - 75%
 					print(color.Color.DARKCYAN + "Some cuts and bruises, I'm otherwise okay" + color.Color.END)
 					sleep(1)
-				elif self.playerHP >= self.playerTotalHP * .25 and self.playerHP < self.playerTotalHP * .50: # Between 25 - 50%
+				elif playerHP >= playerTotalHP * .25 and playerHP < playerTotalHP * .50: # Between 25 - 50%
 					print(color.Color.DARKCYAN + "I'll need healing soon" + color.Color.END)
 					sleep(1)
-				elif self.playerHP >= self.playerTotalHP * .1 and self.playerHP < self.playerTotalHP * .25: # Between 1-25%
+				elif playerHP >= playerTotalHP * .1 and playerHP < playerTotalHP * .25: # Between 1-25%
 					print(color.Color.DARKCYAN + "Need healing, I might not make it" + color.Color.END)
 					sleep(1)
 				else:
@@ -210,19 +212,19 @@ class RPGame():
 
 	def combat(self, player):
 
-		combatMP = self.player.getMana() # Track mana
-		combatEnergy = self.player.getStam() # Track stamina
+		combatMP = player.getMana() # Track mana
+		combatEnergy = player.getStam() # Track stamina
 		randNumber = randint(1, 100) # Create random variable to assign enemy encounter
 		willFlee = randint(1,100) # Predetermined chance to flee
-		opponent = enemy.Enemy() # Instantiate enemy object
+		opponent = Enemy() # Instantiate enemy object
 		opponent.randomEnemy(randNumber) # Assign random enemy
 
-		while self.player.currentHP > 0 and opponent.currentHP > 0: # While player and opponent are still in the game
+		while player.currentHP > 0 and opponent.currentHP > 0: # While player and opponent are still in the game
 
 			combatEnergy += 5 # player regenerates stamina
 
 			cls()
-			self.displayCombatStats(self.player, combatMP, combatEnergy)
+			self.displayCombatStats(player, combatMP, combatEnergy)
 			self.displayEnemyStats(opponent)
 
 			userChoice = input(color.Color.RED + f"{opponent.className}: {opponent.catchPhrase}\n\n1. Slap it over the head\n2. Attempt a takedown\n3. Inventory\n4. Flee\n0. Exit\n\nChoice: " + color.Color.END)
@@ -230,21 +232,21 @@ class RPGame():
 
 			if userChoice == 1: # Standard attack
 				combatEnergy -= 10
-				opponent.currentHP -= self.player.getDMG()
+				opponent.currentHP -= player.getDMG()
 
 				if opponent.isAlive() == True:
-					self.player.currentHP -= opponent.getDMG()
+					player.currentHP -= opponent.getDMG()
 
 			elif userChoice == 2: # Strong attack
 				combatEnergy -= 20
-				opponent.currentHP -= self.player.getDMG() * 2
+				opponent.currentHP -= player.getDMG() * 2
 				
 				if opponent.isAlive() == True:
-					self.player.currentHP -= opponent.getDMG()
+					player.currentHP -= opponent.getDMG()
 			
 			elif userChoice == 3: # Display satchel contents
 				# player.displayInventory()
-				self.player.useItem()
+				player.useItem()
 
 			elif userChoice == 4: # Attempt to flee
 				willFlee = randint(1,100)
@@ -256,7 +258,7 @@ class RPGame():
 					break
 				
 				else: # On fail, opponent gets free hit; just git gud
-					self.player.currentHP -= opponent.getDMG()
+					player.currentHP -= opponent.getDMG()
 					print(f"{opponent.className}: No escape!")
 					sleep(1)
 
@@ -272,18 +274,18 @@ class RPGame():
 			# elif opponent.currentHP <= 0:
 			# 	player.inventory.append(opponent.)
 
-		if self.player.isAlive() == True and opponent.isAlive() == False:
+		if player.isAlive() == True and opponent.isAlive() == False:
 			# TODO: Help me work
 			# i = Item()
 			# i.createBuff()
 			# player.addinventory(i)
 			print("There's something on the ground\n")
 			sleep(1.5)
-			it = item.Item()
+			it = Item()
 			it.createBuff()
-			self.player.addinventory(it)
+			player.addinventory(it)
 			print(f"A {it.name}, nice")
-			self.player.checklevelUP(opponent.getXP())
+			player.checklevelUP(opponent.getXP())
 			sleep(2)
 
 
@@ -294,10 +296,10 @@ class RPGame():
 		print(color.Color.DARKCYAN + f'{Enemy.className} - HP: {Enemy.getCurrentHP()}/{Enemy.getMaxHP()}')
 
 	def displayCombatStats(self, player, mana, stamina): # Keep track of current combat stats
-		print(color.Color.DARKCYAN + f'{self.player.className} - HP: {self.player.getCurrentHP()}/{self.player.getMaxHP()} | MP: {mana}/{self.player.getMana()} | EN: {stamina}/{self.player.getStam()}\n' + color.Color.END)
+		print(color.Color.DARKCYAN + f'{player.className} - HP: {player.getCurrentHP()}/{player.getMaxHP()} | MP: {mana}/{player.getMana()} | EN: {stamina}/{player.getStam()}\n' + color.Color.END)
 	
 	def displayStats(self, player): # For most menus
-		print(color.Color.DARKCYAN + f'{self.player.className}\nHP: {self.player.getCurrentHP()}/{self.player.getMaxHP()} | MP: {self.player.getMana()} | XP: {self.player.getXP()}\n ' + color.Color.END)
+		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getMaxHP()} | MP: {player.getMana()} | XP: {player.getXP()}\n ' + color.Color.END)
 	
 	def displayFullStats(self, player): # For when user wants/needs to see their total stats
-		print(color.Color.DARKCYAN + f'{self.player.className}\nHP: {self.player.getCurrentHP()}/{self.player.getMaxHP()} | MP: {self.player.getMana()}\nGP: {self.player.getGP()} | XP: {self.player.getXP()}\n' + color.Color.END)
+		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getMaxHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n' + color.Color.END)
