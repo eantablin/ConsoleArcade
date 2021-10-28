@@ -3,6 +3,7 @@ import os
 ## import console, sound 
 from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
 from games import eightball, numberguesser, rockpaperscissors, rpgame, hangman, tictactoe
+# from games.rpgFiles import player, enemy, merchant, item
 from dependencies import color
 from time import sleep
 
@@ -29,14 +30,11 @@ def main():
 		
 		if gameChoice == 1: # Run RPG
 			game = rpgame.RPGame()
-			player = rpgame.Player()
-			game.startGame(player)
-			del game, player
-
+			game.startGame()
+			del game
 
 		elif gameChoice == 2: # Run EightBall
 			game = eightball.EightBall()
-			# game = EightBall()
 			game.runGame()
 			del game
 		

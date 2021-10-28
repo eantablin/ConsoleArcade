@@ -1,6 +1,7 @@
 import os
 from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
 from dependencies import color
+from time import sleep
 
 cls = lambda: os.system('clear') # Clear Console
 
@@ -24,11 +25,16 @@ class NumberGuesser():
 		while userChoice != secretNum:
 			print(color.Color.BLUE + "I am thinking of a number between " + str(MIN_NUM) + " and " + str(MAX_NUM) + "..." + color.Color.END)
 			userChoice = int(input(color.Color.BLUE + "Guess the number: " + color.Color.END))
+
 			if userChoice == secretNum:
 				print(color.Color.DARKCYAN + "Wow, that's right!" + color.Color.END)
+				sleep(0.5)
 			elif userChoice < secretNum:
 				print(color.Color.RED + "Higher!" + color.Color.END)
 			elif userChoice > secretNum:
 				print(color.Color.RED + "Lower!" + color.Color.END)
 			else:
 				print(color.Color.RED + "Try again!" + color.Color.END)
+
+			sleep(1)
+			cls()

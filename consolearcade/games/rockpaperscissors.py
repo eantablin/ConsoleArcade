@@ -30,7 +30,7 @@ class RockPaperScissors():
 		playOptions = ["rock", "paper", "scissors"]
 		userWin = False
 		while userWin != True:	
-			userChoice = str(input(color.Color.BLUE + "What is your choice?\n0. Exit " + color.Color.END))
+			userChoice = str(input(color.Color.BLUE + "What is your choice? (rock/paper/scissors)\n0. Exit " + color.Color.END))
 			userChoice.lower() # converts userChoice to all lowercase
 			compChoice = choice(playOptions) # Selects a 'random' play choice for the computer
 			if userChoice == "rock" or userChoice == "r": # Options for if the user selects Rock

@@ -2,437 +2,25 @@ import os
 from random import randint, choice # Used for eightBall, numberGuesser, rockPaperScissors
 from dependencies import color
 from time import sleep
+from games.rpgFiles.player import Player
+from games.rpgFiles.enemy import Enemy
+from games.rpgFiles.merchant import Merchant
+from games.rpgFiles.item import Item
 
 cls = lambda: os.system('clear') # Clear Console
 
-class Player():
-	level = 0 # Track progress
-	health = 0 # Track HP
-	currentHP = health
-	stamina = 0 # Track energy
-	mana = 0 # Track magic potential
-	xp = 0 # Track level-up progress
-	gp = 0 # Track gold pieces (currency)
-	className = '' # Track classtype
-	DMG = 0
-	inventory = []
-	catchPhrase = ""
-
-
-	
-	# Classes will be set default values according to characteristics
-	def classChoice(self, choice): # Initial class choice
-
-		if choice == 1: # Peasant
-			## peasantSound()
-			self.level = 1
-			self.health = 60
-			self.currentHP = self.health
-			self.stamina = 80
-			self.mana = 0 
-			self.xp = 0
-			self.gp = 0
-			self.className = "Peasant"
-			self.DMG = 10
-			# Total = 140
-		elif choice == 2: # Nobleman
-			## nobleSound()
-			self.level = 1
-			self.health = 100
-			self.currentHP = self.health
-			self.stamina = 50
-			self.mana = 5
-			self.xp = 0
-			self.gp = 80
-			self.className = "Nobleman"
-			self.dmg = 12
-			# Total = 155
-		elif choice == 3: # Royalty
-			## royalSound()
-			self.level = 1
-			self.health = 100
-			self.currentHP = self.health
-			self.stamina = 30
-			self.mana = 15
-			self.xp = 0
-			self.gp = 200
-			self.className = "Royalty"
-			self.dmg = 15
-			# Total = 145
-		
-		cls()
-		
-	# Use on user XP gain
-	# Perhaps later make it so bosses can level up too
-	def checklevelUP(self, experience):
-
-		totalXP = self.getXP() + experience # Keep track of current total experience
-
-		while totalXP >= 100:
-
-			if self.className == "Peasant": 
-				self.setMaxHP(self.getMaxHP() + 10)
-				self.setStam(self.getStam() + 6)
-				self.setMana(self.getMana() + 5)
-				self.setDMG(self.getDMG() + 5)
-				# Total = 26
-				
-			elif self.className == "Nobleman":
-				self.setMaxHP(self.getMaxHP() + 4)
-				self.setStam(self.getStam() + 4)
-				self.setMana(self.getMana() + 8)
-				self.setDMG(self.getDMG() + 3)
-				# Total = 19
-			
-			elif self.className == "Royalty":
-				self.setMaxHP(self.getMaxHP() + 2)
-				self.setStam(self.getStam() + 3)
-				self.setMana(self.getMana() + 10)
-				self.setDMG(self.getDMG() + 1)
-				# Total = 16
-
-			# sound.play_effect('arcade:Powerup_1')
-			self.level += 1 # Base upgrade
-			self.currentHP = self.health # Reset HP to max // Free heal
-			totalXP -= 100
-			print("I feel stronger!")
-			sleep(3)
-		
-		if totalXP < 100: # Keep track of total XP
-			self.setXP(totalXP)
-		
-	# TODO: Currently capable of overhealing
-	# Is it a bug? No, it's a feature
-	# Make it so user can just pick item 0 or 1, etc..
-	# User might not expect to make an exact match for item	
-	def useItem(self):
-
-		'''
-		1) Apples
-		2) Tomatoes
-		3) Health Potion
-
-		Choice: 
-		'''
-		userChoice = ""
-
-		while userChoice != 0:  # While user isn't done scrounging around inventory
-			# TODO
-			# Properly implement displaying inventory
-			cls() # Reset screen
-
-			# Test if items work
-			# it = Item()
-			# it.createBuff()
-			# self.addinventory(it)
-
-			# Hold current inventory and it's size
-			inventory = self.getinventory()
-			inventoryLength = len(inventory)
-
-			counter = 1 # Display items from 1..N, skipping 0 due to exit condition
-
-			if inventoryLength > 0: # If there's something in inventory
-				for i in inventory: # Loop through it's entirety
-					print(color.Color.DARKCYAN + f"{counter}) {i.name}" + color.Color.END) # Output each slot
-					counter += 1 # Increase reference value by 1
-
-				print("0) Exit\n")
-
-			else: # Empty satchel, break out of loop
-				print("My satchel is empty.")
-				sleep(1)
-				break
-				
-			# Item usage below
-			userChoice = int(input(color.Color.DARKCYAN + "Which item will you use?\n\nChoice: " + color.Color.END))
-
-			if userChoice != 0:
-				currItem = inventory[userChoice-1] # -1 to account for 0 consistently being exit condition
-			else: 
-				break
-
-			# Confirming Item usage
-			cls()
-			confirmChoice = int(input(f"Use {currItem.name}?\n\n1) Yes\n0) No\n\nChoice: "))
-			# TODO: Change item action dependant on it's strengths; i.e: Healing items will change hp, mana MP, etc..
-			if confirmChoice == 1:
-				self.changeCurrentHP(currItem.healthRegen) #
-				del inventory[userChoice-1]
-			else:
-				userChoice = ""
-				continue
-			# print(inventory[userChoice])
-
-
-			# if userChoice in inventory:
-			# 	if userChoice == "Apples":
-			# 		print(color.Color.DARKCYAN + "You eat the apples and recover some health" + color.Color.END)
-			# 		self.changeCurrentHP(5)
-			# 		self.removeinventory("Apples")
-			# 		sleep(1)
-			# 	elif userChoice == "Health Potion":
-			# 		print(color.Color.DARKCYAN + "You use the Health Potion and recover health" + color.Color.END)
-			# 		self.changeCurrentHP(20)
-			# 		self.removeinventory("Health Potion")
-			# 		sleep(1)
-			# 	else:
-			# 		print(color.Color.RED + "You don't have that item..." + color.Color.END)
-			# 		sleep(1)
-
-	
-	def isAlive(self):
-		if self.currentHP > 0:
-			return True
-		else:
-			return False
-			
-	# Getters and setters
-	#
-	# Level Functionality
-	def getLVL(self):
-		return self.level
-	def setLVL(self, value):
-		self.level = value
-	def changeLVL(self, value):
-		self.level += value
-	
-	# Experience Functionality
-	def getXP(self):
-		return self.xp
-	def setXP(self, value):
-		self.xp = value
-	def changeXP(self, value):
-		self.xp += value
-		
-	# Total HP Functionality
-	def getMaxHP(self):
-		return self.health
-	def setMaxHP(self, value):
-		self.health = value
-	def changeMaxHP(self, value):
-		self.health += value
-
-	# Current HP Functionality
-	def getCurrentHP(self):
-		return self.currentHP
-	def setCurrentHP(self, value):
-		self.currentHP = value
-	def changeCurrentHP(self, value):
-		self.currentHP += value
-	
-	# Stamina Functionality
-	def getStam(self):
-		return self.stamina
-	def setStam(self, value):
-		self.stamina = value
-	def changeStam(self, value):
-		self.stamina += value
-	
-	# Mana Functionality
-	def getMana(self):
-		return self.mana
-	def setMana(self, value):
-		self.mana = value
-	def changeMana(self, value):
-		self.mana += value
-		
-	# Gold piece Functionality
-	def getGP(self):
-		return self.gp
-	def setGP(self, value):
-		self.gp = value
-	def changeGP(self, value):
-		self.gp += value
-
-	# Damage Functionality
-	def getDMG(self):
-		return self.DMG
-	def setDMG(self, value):
-		self.DMG = value
-	def changeDMG(self, value):
-		self.DMG += value
-
-	# CatchPhrase Functionality
-	def getcatchPhrase(self):
-		return self.catchPhrase
-	def setcatchPhrase(self, value):
-		self.catchPhrase = value
-
-	# Inventory Functionality
-	def getinventory(self):
-		return self.inventory
-	def setinventory(self, value): # Instantly arrange inventory
-		self.inventory = value
-	def addinventory(self, value):
-		self.inventory.append(value)
-
-	# Currently not being used
-	def removeinventory(self, itemToRemove): # self, value to remove
-		# TODO: OPTIMIZE ME!
-		counter = 0
-		for i in self.inventory:
-			if i == itemToRemove:
-				self.inventory.remove(i)
-				return
-			counter += 1
-	
-class Enemy(Player):
-
-	# def __init__(self, _HP, _MP, _XP, _DMG):
-	# 	self.HP = _HP
-	# 	self.MP = _MP
-	# 	self.XP = _XP
-	# 	self.DMG = _DMG
-
-	def randomEnemy(self, number): # Takes a number between 1-100, set enemy depending on user luck
-
-		if number <= 10: # Strong mob, 10% chance
-			self.health = 80
-			self.mana = 10
-			self.xp = 50
-			self.DMG = 20
-			self.gp = 50
-			self.className = "Troll"
-			self.catchPhrase = "MMm yum yum hoo min"
-		elif number <= 50 and number > 10: # Trash mob, 40% chance
-			self.health = 20
-			self.mana = 0
-			self.xp = 10
-			self.DMG = 5
-			self.gp = 10
-			self.className = "Goblin"
-			self.catchPhrase = "Givs us the gold, givs us!"
-		elif number <= 80 and number > 50: # Tier 2 trash mob, 30% chance
-			self.health = 30
-			self.mana = 0
-			self.xp = 20
-			self.DMG = 10
-			self.gp = 20
-			self.className = "Orc"
-			self.catchPhrase = "Orcun like human, Orcun eat human."
-		elif number <= 85 and number > 80: # Free xp mob, 5% chance
-			self.health = 40
-			self.mana = 0
-			self.xp = 30
-			self.DMG = 0
-			self.gp = 20
-			self.className = "Bear cub"
-			self.catchPhrase = "bearcubscreeches.mp3"
-		elif number <= 90 and number > 85: # Boss mob, 5% chance
-			self.health = 80
-			self.mana = 40
-			self.xp = 60
-			self.DMG = 30
-			self.gp = 100
-			self.className = "Wizard"
-			self.catchPhrase = "Away, fiend!"
-		elif number <= 100 and number > 90: # Medium mob, 10% chance
-			self.health = 100
-			self.mana = 0
-			self.xp = 40
-			self.DMG = 15
-			self.gp = 40
-			self.className = "Ogre"
-			self.catchPhrase = "Gib shiny!"
-		
-		self.currentHP = self.health # Same for all
-
-## TODO
-# Make merchant class, a store that the user can interact with even choose to attack or just attempt to steal (penalty of buffing enemy/free dmg)
-class Merchant(Player):
-	
-	def encounter(self, player: Player): # Unluckily run into player
-		cls() # Clean console
-
-	def exist(self): # Object comes to initial existance
-		ranNum = randint(1, 100)
-	
-class Item():
-	name = "" # Item name
-	price = 0 # Item price
-	attribute = "" # Item type
-	rarity = "" # Common, Rare, Heroic, Legendary
-	description = "" # Item lore/characteristics
-	healthRegen = 0 # Direct healing
-	healthOverTime = 0 # Heal over Time, HoT
-	manaRegen = 0 # Mana intake
-	manaOverTime = 0 # Mana intake over time, to prevent spell spamming, most common
-	autoDamage = 0 # Damage taken by using item
-	autoDamageOverTime = 0 # Damage taken by using item, over time
-	damage = 0 # Damage increase
-	damageOverTime = 0 # Attacks apply a DoT
-	canCook = False # Can item be cooked? # TODO: Properly implement me later
-
-	def items(self):
-		itemsList = ["Health Potion", "Apples", "Soup", "Mana Potion", "Small Health Potion", "Small Mana Potion"]
-
-	def createBuff(self):
-		ranNum = randint(1, 100)
-		self.attribute = "buff"
-
-		if ranNum <= 10: # Health Potion, 10% chance
-			self.name = "Health Potion"
-			self.price = 20
-			self.rarity = "Common"
-			self.healthRegen = 20
-			self.description = "This bottle has some heft to it, and a pungent smell"
-			self.canCook = False
-		elif ranNum <= 50 and ranNum > 10: # Apples, 40% chance
-			self.name = "Apples"
-			self.price = 5
-			self.rarity = "Common"
-			self.healthRegen = 5
-			self.description = "Red, crispy apple"
-			self.canCook = True
-		elif ranNum <= 80 and ranNum > 50: # Soup, 30% chance
-			self.name = "Soup"
-			self.price = 10
-			self.rarity = "Common"
-			self.healthRegen = 10
-			self.description = "A hearty soup stored in a jar, maybe it'd taste better cooked?"
-			self.canCook = True
-		elif ranNum <= 85 and ranNum > 80: # Mana potion, 5% chance
-			self.name = "Mana Potion"
-			self.price = 30
-			self.rarity = "Common"
-			self.manaRegen = 20
-			self.description = "Blue viscous liquid, is it looking at me?"
-			self.canCook = False
-		elif ranNum <= 90 and ranNum > 85: # Small Health Potion, 5% chance
-			self.name = "Small Health Potion"
-			self.price = 10
-			self.rarity = "Common"
-			self.healthRegen = 15
-			self.description = "Red tones in a small bottle, better not drop it"
-			self.canCook = False
-		elif ranNum <= 100 and ranNum > 90: # Small Mana Potion, 10% chance
-			self.name = "Small Mana Potion"
-			self.price = 15
-			self.rarity = "Common"
-			self.manaRegen = 10
-			self.description = "Blue tones in an oddly shaped triangular bottle"
-			self.canCook = False
-
-	def createDebuff(self):
-		self.attribute = "debuff"
-		return
-	def createJunk(self):
-		self.attribute = "junk"
-		return
-	def createEquipment(self):
-		self.attribute = "equipment"
-		return
-	
 class RPGame():
 	
 	isAlive = True # Game still running?
-	
-	def startGame(self, player):
+
+
+
+	def startGame(self):
 		
 		# Game setup
 		cls()
 		# sound.play_effect('game:Click_1')
+		player = Player() # Initialize player
 		self.characterChoice(player)
 		
 		while self.isAlive == True and player.currentHP > 0:
@@ -490,7 +78,7 @@ class RPGame():
 				cls()
 				## royalSound()
 
-				print(color.Color.BLUE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + color.Color.END)
+				print(color.Color.PURPLE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + color.Color.END)
 				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others\n\nChoice: " + color.Color.END))
 				
 				if classChoice == 1:
@@ -523,7 +111,7 @@ class RPGame():
 						# Can be a fight, someone with a gift
 						# Or they can have important information
 						# Allowing one of the players stats to improve
-						sleep(1)
+						sleep(1.5)
 						return
 
 					elif encounter == 2: # Traveling merchant
@@ -535,7 +123,7 @@ class RPGame():
 						# be provided with a selection of 5-10 items
 						# which reset every time player sees them
 						print("Ah, hello my friend. Care to buy something? I have many fine wares for you today.")
-						sleep(1)
+						sleep(1.5)
 						del merchant # Goodbye merchant, we encounter different/new ones on the road
 						return 
 						
@@ -547,12 +135,12 @@ class RPGame():
 						print("There's a mound in the distance\n")
 						sleep(2)
 						print(color.Color().BROWN + color.Color().FAINT + "*panting*\n" + color.Color().END)
+						sleep(1.2)
 						print("I found a chest!")
 						sleep(1.5)
 						it = Item()
 						it.createBuff()
 						player.addinventory(it)
-						cls()
 						print(f"Nice, a {it.name}. Should come in handy")
 						sleep(1.8)
 						return 
@@ -601,7 +189,7 @@ class RPGame():
 				# player.displayInventory()
 				player.useItem()
 				
-			elif userChoice == 3: # Player stats
+			elif userChoice == 3: # player stats
 				playerHP = player.getCurrentHP()
 				playerTotalHP = player.getMaxHP()
 				if playerHP >= playerTotalHP * .75: # Top 75% of hp
@@ -633,7 +221,7 @@ class RPGame():
 
 		while player.currentHP > 0 and opponent.currentHP > 0: # While player and opponent are still in the game
 
-			combatEnergy += 5 # Player regenerates stamina
+			combatEnergy += 5 # player regenerates stamina
 
 			cls()
 			self.displayCombatStats(player, combatMP, combatEnergy)
@@ -715,5 +303,3 @@ class RPGame():
 	
 	def displayFullStats(self, player): # For when user wants/needs to see their total stats
 		print(color.Color.DARKCYAN + f'{player.className}\nHP: {player.getCurrentHP()}/{player.getMaxHP()} | MP: {player.getMana()}\nGP: {player.getGP()} | XP: {player.getXP()}\n' + color.Color.END)
-
-
