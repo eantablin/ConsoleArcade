@@ -36,5 +36,5 @@ class NumberGuesser():
 			else:
 				print(color.Color.RED + "Try again!" + color.Color.END)
 
-			sleep(1.2)
+			sleep(1)
 			cls()
