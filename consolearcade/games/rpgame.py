@@ -248,7 +248,6 @@ class RPGame():
 					player.currentHP -= opponent.getDMG()
 					print(f"{opponent.className}: No escape!")
 					sleep(1)
-
 			
 			elif userChoice == 0:
 				self.isAlive = False
@@ -261,11 +260,8 @@ class RPGame():
 			# elif opponent.currentHP <= 0:
 			# 	player.inventory.append(opponent.)
 
-		if player.isAlive() == True and opponent.isAlive() == False:
+		if player.isAlive() == True and opponent.isAlive() == False: # Player survived: rewards
 			# TODO: Help me work
-			# i = Item()
-			# i.createBuff()
-			# player.addinventory(i)
 			print("There's something on the ground\n")
 			sleep(1.5)
 			it = Item()
