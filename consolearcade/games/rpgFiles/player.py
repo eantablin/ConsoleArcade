@@ -136,7 +136,7 @@ class Player():
 					print(color.Color.DARKCYAN + f"{counter}) {i.name}" + color.Color.END) # Output each slot
 					counter += 1 # Increase reference value by 1
 
-				print("0) Exit\n")
+				print(color.Color.DARKCYAN + "0) Exit\n" + color.Color.END)
 
 			else: # Empty satchel, break out of loop
 				print("My satchel is empty.")
@@ -161,23 +161,6 @@ class Player():
 			else:
 				userChoice = ""
 				continue
-			# print(inventory[userChoice])
-
-
-			# if userChoice in inventory:
-			# 	if userChoice == "Apples":
-			# 		print(color.Color.DARKCYAN + "You eat the apples and recover some health" + color.Color.END)
-			# 		self.changeCurrentHP(5)
-			# 		self.removeinventory("Apples")
-			# 		sleep(1)
-			# 	elif userChoice == "Health Potion":
-			# 		print(color.Color.DARKCYAN + "You use the Health Potion and recover health" + color.Color.END)
-			# 		self.changeCurrentHP(20)
-			# 		self.removeinventory("Health Potion")
-			# 		sleep(1)
-			# 	else:
-			# 		print(color.Color.RED + "You don't have that item..." + color.Color.END)
-			# 		sleep(1)
 
 	
 	def isAlive(self):
@@ -187,7 +170,7 @@ class Player():
 			return False
 			
 	# Getters and setters
-	#
+	
 	# Level Functionality
 	def getLVL(self):
 		return self.level

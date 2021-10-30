@@ -3,13 +3,11 @@ import os
 ## import console, sound 
 from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
 from games import eightball, numberguesser, rockpaperscissors, rpgame, hangman, tictactoe
-# from games.rpgFiles import player, enemy, merchant, item
 from dependencies import color
 from time import sleep
 
 
 # Shorthand functions 
-## cls = lambda: console.clear() # Clear console
 cls = lambda: os.system('clear') # Clear Console
 ## peasantSound = lambda: sound.play_effect('8ve:8ve-beep-timber') # Peasant's signature sound
 ## nobleSound = lambda: sound.play_effect('game:Woosh_1') # Nobleman's signature sound
