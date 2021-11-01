@@ -172,7 +172,6 @@ class RPGame():
 				# In order of priority
 				# Add chance for combat, traveling merchant, find treasure, dungeon, town
 
-
 			elif userChoice == 2: # Inventory
 				player.useItem()
 				
