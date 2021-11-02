@@ -19,7 +19,7 @@ class Item():
 	def items(self):
 		itemsList = ["Health Potion", "Apples", "Tomatoes", "Soup", "Mana Potion", "Small Health Potion", "Small Mana Potion", "Cursed Mirror", "Strange Doll", "Screaming Head", "Death's Cloak", "Rock", "Rotten Tomato", "Jar of Nails", "Sand", "Cute Plushie", "Knife", "Longsword", "Whip", "Wand", "Magic Scroll"]
 
-	def createBuff(self):
+	def createBuff(self): # Advantageous items to have
 		ranNum = randint(1, 100)
 		self.attribute = "buff"
 
@@ -72,35 +72,37 @@ class Item():
 			self.description = "Blue tones in an oddly shaped triangular bottle"
 			self.canCook = False
 
-	def createDebuff(self):
+	def createDebuff(self): # Items that you might not want to use
 		ranNum = randint(1, 100)
 		self.attribute = "debuff"
-		if ranNum <= 25: # Cursed Mirror, 10% chance
+
+		# TODO: Cursed mirror seems like a buff/equipment
+		if ranNum <= 25: # Cursed Mirror, 25% chance
 			self.name = "Cursed Mirror"
 			self.price = 10
 			self.rarity = "Common"
 			self.description = "A black mirror, reflects a portion of the damage you deal"
 			self.canCook = False
-		elif ranNum <= 50 and ranNum > 25: # Strange Doll, 30% chance
+		elif ranNum <= 50 and ranNum > 25: # Strange Doll, 25% chance
 			self.name = "Strange Doll"
 			self.price = 5
 			self.rarity = "Common"
 			self.description = "Something is off about this doll... It creates an ominous atmosphere"
 			self.canCook = False
-		elif ranNum <= 75 and ranNum > 50: # Screaming Head, 30% chance
+		elif ranNum <= 75 and ranNum > 50: # Screaming Head, 25% chance
 			self.name = "Screaming Head"
 			self.price = 5
 			self.rarity = "Common"
 			self.description = "A severed, bloody head. It will not stop wailing."
 			self.canCook = False
-		elif ranNum <= 100 and ranNum > 75: # Death's Cloak , 30% chance
+		elif ranNum <= 100 and ranNum > 75: # Death's Cloak , 25% chance
 			self.name = "Death's Cloak"
 			self.price = 20
 			self.rarity = "Rare"
 			self.description = "Someone stole this cloak from the physical embodiment of Death... It will attract his attention if you wear it."
 			self.canCook = False
 
-	def createJunk(self):
+	def createJunk(self): # Items which have little value aside from monetary
 		ranNum = randint(1, 100)
 		self.attribute = "junk"
 
@@ -139,7 +141,7 @@ class Item():
 			self.description = "A small plush toy, will provide moral support and hugs."
 			self.canCook = False
 
-	def createEquipment(self):
+	def createEquipment(self): # Items player can equip for N amount of combat scenarios
 		ranNum = randint(1, 100)
 		self.attribute = "equipment"
 

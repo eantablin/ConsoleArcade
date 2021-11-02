@@ -270,9 +270,6 @@ class RPGame():
 			player.checklevelUP(opponent.getXP())
 			sleep(2)
 
-
-
-
 	# Rewrite me after Enemy class remake
 	def displayEnemyStats(self, Enemy): # Show enemy stats
 		print(color.Color.DARKCYAN + f'{Enemy.className} - HP: {Enemy.getCurrentHP()}/{Enemy.getMaxHP()}')
