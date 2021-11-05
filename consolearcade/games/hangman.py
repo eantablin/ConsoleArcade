@@ -10,12 +10,20 @@ class HangMan():
 
     def runGame(self):
         cls()
-        userChoice = 1
+        userChoice = '1'
 
-        while userChoice != 0:
-            userChoice = int(input(color.Color.BLUE + "Play Hangman?\n1. Game On!\n0. Exit " + color.Color.END))
+        while userChoice != '0':
+            userChoice = input(color.Color.BLUE + "Play Hangman?\n1. Game On!\n0. Exit " + color.Color.END)
+            try:
+                int(userChoice)
+                isInt = True
+            except ValueError:
+                isInt = False
+                print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+                print(color.Color.RED + "HINT: The only accepted inputs are 1 and 0!" + color.Color.END)
+                time.sleep(1)
             cls()
-            if userChoice == 1:
+            if userChoice == '1':
                 self.gameOn()
 
     def getWord(self):
