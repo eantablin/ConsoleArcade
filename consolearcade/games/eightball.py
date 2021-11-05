@@ -23,8 +23,8 @@ class EightBall():
 				isInt = False
 				print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
 				print(color.Color.RED + "HINT: The only accepted inputs are 1 and 0!" + color.Color.END)
-				time.sleep(1)
-			
+				time.sleep(1.5)
+			cls()
 			if userChoice == '1':
 				# sound.play_effect('casino:DieShuffle3')
 				self.rollBall()
