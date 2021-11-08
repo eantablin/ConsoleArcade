@@ -146,6 +146,15 @@ class Player():
 			# Item usage below
 			userChoice = int(input(color.Color.DARKCYAN + "Which item will you use?\n\nChoice: " + color.Color.END))
 
+			# try:
+			# 	userChoice = int(userChoice)
+			# 	isInt = True
+			# except ValueError:
+			# 	print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+			# 	sleep(1.5)
+
+			# if userChoice != int:
+			# 	print(color.Color.RED + "Invalid selection, try again." + color.Color.END)
 			if userChoice != 0:
 				currItem = inventory[userChoice-1] # -1 to account for 0 consistently being exit condition
 			else: 
