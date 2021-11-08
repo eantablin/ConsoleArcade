@@ -9,15 +9,15 @@ class EightBall():
 	
 	def runGame(self):
 		cls()
-		userChoice = '1'
+		userChoice = 1
 		# sound.play_effect('casino:DieThrow3')
 		
 		# While user doesnt wanna leave
-		while userChoice != '0':
+		while userChoice != 0:
 
 			userChoice = input(color.Color.DARKCYAN + "Be illuminated by the EightBall\n1. Roll ball\n0. Exit " + color.Color.END)
 			try:
-				int(userChoice)
+				userChoice = int(userChoice)
 				isInt = True
 			except ValueError:
 				isInt = False
@@ -25,7 +25,7 @@ class EightBall():
 				print(color.Color.RED + "HINT: The only accepted inputs are 1 and 0!" + color.Color.END)
 				time.sleep(1.5)
 			cls()
-			if userChoice == '1':
+			if userChoice == 1:
 				# sound.play_effect('casino:DieShuffle3')
 				self.rollBall()
 			

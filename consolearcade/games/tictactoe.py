@@ -113,11 +113,11 @@ class TicTacToe():
 
     def runGame(self):
         cls()
-        userChoice = '1'
-        while userChoice != '0':
+        userChoice = 1
+        while userChoice != 0:
             userChoice = input("Play Tic-Tac-Toe?\n1. Play\n0. Exit ")
             try:
-                int(userChoice)
+                userChoice = int(userChoice)
                 isInt = True
             except ValueError:
                 isInt = False
@@ -125,7 +125,7 @@ class TicTacToe():
                 print(color.Color.RED + "HINT: The only valid inputs are 1 and 0!" + color.Color.END)
                 time.sleep(1.5)
             cls()
-            if userChoice == '1':
+            if userChoice == 1:
                 TicTacToe.clearBoard(self)
                 xPlayer = HumanPlayer('X')
                 oPlayer = ComputerPlayer('O')

@@ -9,12 +9,12 @@ class NumberGuesser():
 
 	def runGame(self):
 		cls()
-		userChoice = '1'
+		userChoice = 1
 
-		while userChoice != '0':
+		while userChoice != 0:
 			userChoice = input(color.Color.BLUE + "Play guess the number!\n1. Play\n0. Exit " + color.Color.END)
 			try:
-				int(userChoice)
+				userChoice = int(userChoice)
 				isInt = True
 			except ValueError:
 				isInt = False
@@ -23,7 +23,7 @@ class NumberGuesser():
 				sleep(1.5)
 			
 			cls()
-			if userChoice == '1':
+			if userChoice == 1:
 				self.guessTime()
 	
 	def guessTime(self):
@@ -36,7 +36,7 @@ class NumberGuesser():
 			print(color.Color.BLUE + "I am thinking of a number between " + str(MIN_NUM) + " and " + str(MAX_NUM) + "..." + color.Color.END)
 			userChoice = input(color.Color.BLUE + "Guess the number: " + color.Color.END)
 			try:
-				int(userChoice)
+				userChoice = int(userChoice)
 				isInt = True
 			except ValueError:
 				isInt = False
