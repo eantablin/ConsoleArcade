@@ -26,7 +26,7 @@ def main():
 		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. NumberGuesser -- Stable\n4. RockPaperScissors -- Stable\n5. HangMan -- Stable\n6. TicTacToe -- In Progress\n7. Load Save -- TBD\n0. Exit")
 		gameChoice = input('\nChoice: ')
 
-		try: 
+		try: # Try to make user input an int, is used in most of the games
 			gameChoice = int(gameChoice) # Try to make gameChoice an int value
 			isInt = True
 		except ValueError: # If gameChoice is a str value

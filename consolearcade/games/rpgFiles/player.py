@@ -144,25 +144,33 @@ class Player():
 				break
 				
 			# Item usage below
-			userChoice = int(input(color.Color.DARKCYAN + "Which item will you use?\n\nChoice: " + color.Color.END))
+			userChoice = input(color.Color.DARKCYAN + "Which item will you use?\n\nChoice: " + color.Color.END)
 
-			# try:
-			# 	userChoice = int(userChoice)
-			# 	isInt = True
-			# except ValueError:
-			# 	print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
-			# 	sleep(1.5)
+			try: # Try to make user input an int
+				userChoice = int(userChoice)
+				isInt = True
+			except ValueError:  # If userChoice is a str value
+				print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+				sleep(1.5)
+				return
 
-			# if userChoice != int:
-			# 	print(color.Color.RED + "Invalid selection, try again." + color.Color.END)
-			if userChoice != 0:
+			if userChoice != 0 and userChoice != str:
 				currItem = inventory[userChoice-1] # -1 to account for 0 consistently being exit condition
 			else: 
 				break
 
 			# Confirming Item usage
 			cls()
-			confirmChoice = int(input(f"Use {currItem.name}?\n\n1) Yes\n0) No\n\nChoice: "))
+			confirmChoice = input(f"Use {currItem.name}?\n\n1) Yes\n0) No\n\nChoice: ")
+
+			try: # Try to make user input an int
+				confirmChoice = int(confirmChoice)
+				isInt = True
+			except ValueError:  # If confirmChoice is a str value
+				print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+				sleep(1.5)
+				return
+
 			# TODO: Change item action dependant on it's strengths; i.e: Healing items will change hp, mana MP, etc..
 			if confirmChoice == 1:
 				self.changeCurrentHP(currItem.healthRegen) #

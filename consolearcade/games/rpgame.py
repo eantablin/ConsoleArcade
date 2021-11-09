@@ -49,10 +49,10 @@ class RPGame():
 			cls()
 			userChoice = input(color.Color.DARKCYAN + "Pick a class\n\n1. Peasant\n2. Nobleman\n3. Royalty\n0. Exit\n\nChoice: " + color.Color.END)
 			
-			try:
+			try: # Checks if user input is an int
 				userChoice = int(userChoice)
 				isInt = True
-			except ValueError:
+			except ValueError: # If the user input is a str, this happens
 				isInt = False
 				print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
 				print(color.Color.RED + "The only valid inputs are: 1, 2, 3, and 0!" + color.Color.END)
