@@ -13,7 +13,15 @@ class HangMan():
         userChoice = 1
 
         while userChoice != 0:
-            userChoice = int(input(color.Color.BLUE + "Play Hangman?\n1. Game On!\n0. Exit " + color.Color.END))
+            userChoice = input(color.Color.BLUE + "Play Hangman?\n1. Game On!\n0. Exit " + color.Color.END)
+            try:
+                userChoice = int(userChoice)
+                isInt = True
+            except ValueError:
+                isInt = False
+                print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+                print(color.Color.RED + "HINT: The only accepted inputs are 1 and 0!" + color.Color.END)
+                time.sleep(1.5)
             cls()
             if userChoice == 1:
                 self.gameOn()

@@ -2,6 +2,7 @@ import os
 import math 
 import time
 from random import choice
+from dependencies import color
 
 cls = lambda: os.system('clear') # Clear Console
 
@@ -104,7 +105,7 @@ class TicTacToe():
             # Switch Players
             letter = 'O' if letter == 'X' else 'X'
     
-            time.sleep(1)
+            time.sleep(1.5)
 
         if printGame:
             print("It's a tie!")
@@ -114,7 +115,15 @@ class TicTacToe():
         cls()
         userChoice = 1
         while userChoice != 0:
-            userChoice = int(input("Play Tic-Tac-Toe?\n1. Play\n0. Exit "))
+            userChoice = input("Play Tic-Tac-Toe?\n1. Play\n0. Exit ")
+            try:
+                userChoice = int(userChoice)
+                isInt = True
+            except ValueError:
+                isInt = False
+                print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+                print(color.Color.RED + "HINT: The only valid inputs are 1 and 0!" + color.Color.END)
+                time.sleep(1.5)
             cls()
             if userChoice == 1:
                 TicTacToe.clearBoard(self)
@@ -154,10 +163,4 @@ class HumanPlayer(Player):
                 print("Invalid square, try again.")
             else:
                 validSquare = True
-            # try:
-            #     if val not in game.availableMoves():
-            #         raise ValueError
-            #     valid_square = True
-            # except ValueError:
-            #     print('Invalid square. Try again.')
         return val

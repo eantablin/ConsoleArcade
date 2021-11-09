@@ -47,36 +47,88 @@ class RPGame():
 		
 		while self.isAlive == True: # While user hasn't decided to exit
 			cls()
-			userChoice = int(input(color.Color.DARKCYAN + "Pick a class\n\n1. Peasant\n2. Nobleman\n3. Royalty\n0. Exit\n\nChoice: " + color.Color.END))
+			userChoice = input(color.Color.DARKCYAN + "Pick a class\n\n1. Peasant\n2. Nobleman\n3. Royalty\n0. Exit\n\nChoice: " + color.Color.END)
 			
+			try: # Checks if user input is an int
+				userChoice = int(userChoice)
+				isInt = True
+			except ValueError: # If the user input is a str, this happens
+				isInt = False
+				print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+				print(color.Color.RED + "The only valid inputs are: 1, 2, 3, and 0!" + color.Color.END)
+				sleep(1.5)
+
 			if userChoice == 1: # User might pick to be a peasant
 				cls()
 				## peasantSound()
 
 				print(color.Color.RED + "Due to years of backbreaking work, Caldria's peasants are known to have a high tolerance for even the most grueling of tasks.\n\n" + color.Color.END)
-				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Peasant\n0. No, let me check others\n\nChoice: " + color.Color.END))
+				classChoice = input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Peasant\n0. No, let me check others\n\nChoice: " + color.Color.END)
+				
+				try:
+					classChoice = int(classChoice)
+					isInt = True
+				except ValueError:
+					isInt = False
+					print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+					print(color.Color.RED + "The only valid inputs are 1 and 0!" + color.Color.END)
+					sleep(1.5)
+			
+				if classChoice == 1: # User has picked a class
+					player.classChoice(userChoice)
+					return
 				
 			elif userChoice == 2: # User might choose a nobleman
 				cls()
 				## nobleSound()
 
 				print(color.Color.BLUE + "Born to a strong house with servants aplenty, the Caldrian noblemen are considered chivalrous and known to be healthy.\n\n" + color.Color.END)
-				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Nobleman\n0. No, let me check others\n\nChoice: " + color.Color.END))
+				classChoice = input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm a Nobleman\n0. No, let me check others\n\nChoice: " + color.Color.END)
+				
+				try:
+					classChoice = int(classChoice)
+					isInt = True
+				except ValueError:
+					isInt = False
+					print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+					print(color.Color.RED + "The only valid inputs are 1 and 0!" + color.Color.END)
+					sleep(1.5)
+
+				if classChoice == 1: # User has picked a class
+					player.classChoice(userChoice)
+					return
 			
 			elif userChoice == 3: # Perhaps user went for royalty
 				cls()
 				## royalSound()
 
 				print(color.Color.PURPLE + "Caldria's royalty are renown for their short temper, it's said that the magical books they looted from surrounding nations have essentially changed them.\n\n" + color.Color.END)
-				classChoice = int(input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others\n\nChoice: " + color.Color.END))
-					 	
+				classChoice = input(color.Color.DARKCYAN + "Is this your class?\n1. Yes, I'm Royalty\n0. No, let me check others\n\nChoice: " + color.Color.END)
+				
+				try:
+					classChoice = int(classChoice)
+					isInt = True
+				except ValueError:
+					isInt = False
+					print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+					print(color.Color.RED + "The only valid inputs are 1 and 0!" + color.Color.END)
+					sleep(1.5)
+				
+				if classChoice == 1: # User has picked a class
+					player.classChoice(userChoice)
+					return
+					
 			elif userChoice == 0: # User chooses to exit
 				self.isAlive = False
 				return
+			
+			else:
+				print(color.Color.RED + "Invalid selection, try again." + color.Color.END)
 
-			if classChoice == 1: # User has picked a class
-				player.classChoice(userChoice)
-				return
+			# if classChoice == 1: # User has picked a class
+			# 	player.classChoice(userChoice)
+			# 	return
+			
 				
 							
 	def adventure(self, player): # Main game function
@@ -85,9 +137,17 @@ class RPGame():
 		while self.isAlive == True:
 			cls()
 			self.displayStats(player)
-			userChoice = int(input(color.Color.DARKCYAN + '1. Explore\n2. Inventory\n3. Stats\n0. Exit\n\nChoice: ' + color.Color.END))
+			userChoice = input(color.Color.DARKCYAN + '1. Explore\n2. Inventory\n3. Stats\n0. Exit\n\nChoice: ' + color.Color.END)
 
-			
+			try:
+				userChoice = int(userChoice)
+				isInt = True
+			except ValueError:
+				isInt = False
+				print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+				print(color.Color.RED + "The only valid inputs are: 1, 2, 3, and 0!" + color.Color.END)
+				sleep(1.5)
+
 			if userChoice == 1: # Explore
 				
 				while userChoice != 0 or player.isAlive == True:
@@ -196,6 +256,9 @@ class RPGame():
 
 			elif userChoice == 0: # Exit game
 				self.isAlive = False
+			
+			else:
+				print(color.Color.RED + "Invalid selection, try again." + color.Color.END)
 
 	def combat(self, player):
 
@@ -215,7 +278,15 @@ class RPGame():
 			self.displayEnemyStats(opponent)
 
 			userChoice = input(color.Color.RED + f"{opponent.className}: {opponent.catchPhrase}\n\n1. Slap it over the head\n2. Wack it with a stick\n3. Inventory\n4. Flee\n0. Exit\n\nChoice: " + color.Color.END)
-			userChoice = int(userChoice)
+			
+			try:
+				userChoice = int(userChoice)
+				isInt = True
+			except ValueError:
+				isInt = False
+				print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+				print(color.Color.RED + "The only valid inputs are: 1, 2, 3, 4, and 0!" + color.Color.END)
+				sleep(1.5)
 
 			if userChoice == 1: # Standard attack
 				combatEnergy -= 10
