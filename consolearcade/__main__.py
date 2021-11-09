@@ -75,5 +75,6 @@ def main():
 		
 		else:
 			print(color.Color.RED + "Invalid selection, try again." + color.Color.END)
+			sleep(1)
 
 main() # Run program
