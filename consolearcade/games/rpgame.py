@@ -23,7 +23,7 @@ class RPGame():
 		player = Player() # Initialize player
 		self.characterChoice(player) # Allow player to choose base character
 		
-		while self.isAlive and player.isAlive: # While game is still running and player isn't dead
+		while self.isAlive == True and player.currentHP > 0: # While game is still running and player isn't dead
 
 			# Adventure time
 			self.adventure(player)
@@ -44,7 +44,7 @@ class RPGame():
 
 	def characterChoice(self, player): # Allows user to pick a class
 		
-		while self.isAlive: # While user hasn't decided to exit
+		while self.isAlive == True: # While user hasn't decided to exit
 			cls()
 			userChoice = int(input(color.Color.DARKCYAN + "Pick a class\n\n1. Peasant\n2. Nobleman\n3. Royalty\n0. Exit\n\nChoice: " + color.Color.END))
 			
@@ -81,7 +81,7 @@ class RPGame():
 	def adventure(self, player): # Main game function
 		# TODO: Add save/load
 	
-		while self.isAlive:
+		while self.isAlive == True:
 			cls()
 			self.displayStats(player) # Display current user stats
 			userChoice = int(input(color.Color.DARKCYAN + '1. Explore\n2. Inventory\n3. Stats\n0. Exit\n\nChoice: ' + color.Color.END)) 
@@ -89,7 +89,7 @@ class RPGame():
 			
 			if userChoice == 1: # Explore
 				
-				while userChoice != 0 or player.isAlive: # While user hasn't chosen to exit or they're still alive
+				while userChoice != 0 or player.isAlive == True: # While user hasn't chosen to exit or they're still
 					encounter = randint(1, 7)
 					if encounter == 1: # Encounter stranger
 						cls()
