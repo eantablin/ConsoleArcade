@@ -10,8 +10,18 @@ class NumberGuesser():
 	def runGame(self):
 		cls()
 		userChoice = 1
+
 		while userChoice != 0:
-			userChoice = int(input(color.Color.BLUE + "Play guess the number!\n1. Play\n0. Exit " + color.Color.END))
+			userChoice = input(color.Color.BLUE + "Play guess the number!\n1. Play\n0. Exit " + color.Color.END)
+			try:
+				userChoice = int(userChoice)
+				isInt = True
+			except ValueError:
+				isInt = False
+				print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+				print(color.Color.RED + "HINT: The only accepted inputs are 1 and 0!" + color.Color.END)
+				sleep(1.5)
+			
 			cls()
 			if userChoice == 1:
 				self.guessTime()
@@ -24,14 +34,21 @@ class NumberGuesser():
 
 		while userChoice != secretNum:
 			print(color.Color.BLUE + "I am thinking of a number between " + str(MIN_NUM) + " and " + str(MAX_NUM) + "..." + color.Color.END)
-			userChoice = int(input(color.Color.BLUE + "Guess the number: " + color.Color.END))
-
-			if userChoice == secretNum:
+			userChoice = input(color.Color.BLUE + "Guess the number: " + color.Color.END)
+			try:
+				userChoice = int(userChoice)
+				isInt = True
+			except ValueError:
+				isInt = False
+			if isInt == False:
+				print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+			elif int(userChoice) == secretNum:
 				print(color.Color.DARKCYAN + "Wow, that's right!" + color.Color.END)
 				sleep(0.5)
-			elif userChoice < secretNum:
+				return
+			elif int(userChoice) < secretNum:
 				print(color.Color.RED + "Higher!" + color.Color.END)
-			elif userChoice > secretNum:
+			elif int(userChoice) > secretNum:
 				print(color.Color.RED + "Lower!" + color.Color.END)
 			else:
 				print(color.Color.RED + "Try again!" + color.Color.END)
