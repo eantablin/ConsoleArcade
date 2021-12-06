@@ -21,15 +21,14 @@ class RPGame():
 		cls()
 		# sound.play_effect('game:Click_1')
 		player = Player() # Initialize player
-		self.characterChoice(player)
+		self.characterChoice(player) # Allow player to choose base character
 		
-		while self.isAlive == True and player.currentHP > 0:
+		while self.isAlive == True and player.currentHP > 0: # While game is still running and player isn't dead
 
 			# Adventure time
 			self.adventure(player)
-			# TODO implement timer, 1-2 seconds
 
-			if player.currentHP <= 0:
+			if player.currentHP <= 0: # On player death
 				counter = 0
 				while counter < 10: # Death screen lasts 5 seconds
 					cls()
@@ -136,9 +135,10 @@ class RPGame():
 	
 		while self.isAlive == True:
 			cls()
+
 			self.displayStats(player)
 			userChoice = input(color.Color.DARKCYAN + '1. Explore\n2. Inventory\n3. Stats\n0. Exit\n\nChoice: ' + color.Color.END)
-
+      
 			try:
 				userChoice = int(userChoice)
 				isInt = True
@@ -150,7 +150,7 @@ class RPGame():
 
 			if userChoice == 1: # Explore
 				
-				while userChoice != 0 or player.isAlive == True:
+				while userChoice != 0 or player.isAlive == True: # While user hasn't chosen to exit or they're still
 					encounter = randint(1, 7)
 					if encounter == 1: # Encounter stranger
 						cls()
@@ -340,9 +340,6 @@ class RPGame():
 			print(f"A {it.name}, nice")
 			player.checklevelUP(opponent.getXP())
 			sleep(2)
-
-
-
 
 	# Rewrite me after Enemy class remake
 	def displayEnemyStats(self, Enemy): # Show enemy stats
