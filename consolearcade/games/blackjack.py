@@ -1,6 +1,6 @@
 import os
 from random import randint, choice, shuffle
-# from dependencies import color
+from dependencies import color
 from time import sleep
 
 cls = lambda: os.system('clear') # Clear Console
@@ -12,7 +12,7 @@ class Blackjack():
     isAlive = True
 
 
-    def gameLogic(self):
+    def runGame(self):
         # sleep(2)
 
         # Initializes hands
@@ -24,13 +24,17 @@ class Blackjack():
             print("Horse's blackjack! House plays safe at 16")
             self.displayStats(player, dealer)
 
-            uInput = input("(H)it or (S)tay?: ")
+            uInput = input("(H)it or (S)tay? or (0) to exit: ")
 
             if "h" in uInput.lower():
                 self.hit(player)
+                self.checkstats(player, dealer)
+            elif "0" or "e" or "x" in uInput.lower():
+                self.isAlive = False
             else:
                 while sum(dealer) < 17:
                     self.hit(dealer)
+                    self.checkstats(player, dealer)
 
         # if playAgain == True, deck = [1,2,3,4,5,6,7,8,9,10,11,12,13] * 4 # 4 decks
 
@@ -91,6 +95,3 @@ class Blackjack():
         dealerTotal = sum(dealer)
 
         print(f"Player: {playerTotal}\nDealer: {dealerTotal}")
-
-bjack = Blackjack()
-bjack.gameLogic()

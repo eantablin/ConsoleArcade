@@ -2,7 +2,7 @@ import sys
 import os
 ## import console, sound 
 from random import randint, choice# Used for eightBall, numberGuesser, rockPaperScissors
-from games import eightball, numberguesser, rockpaperscissors, rpgame, hangman, tictactoe
+from games import eightball, numberguesser, rockpaperscissors, rpgame, hangman, tictactoe, blackjack
 from dependencies import color
 from time import sleep
 
@@ -23,7 +23,7 @@ def main():
 	
 		cls()
 		# sound.play_effect('digital:HighDown')
-		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. NumberGuesser -- Stable\n4. RockPaperScissors -- Stable\n5. HangMan -- Stable\n6. TicTacToe -- In Progress\n7. Load Save -- TBD\n0. Exit")
+		print("NULL Arcade\n\nPick a game\n1. RPG -- In Progress\n2. EightBall -- Stable\n3. NumberGuesser -- Stable\n4. RockPaperScissors -- Stable\n5. HangMan -- Stable\n6. TicTacToe -- In Progress\n7. Blackjack -- In Progress\n8. Load Save -- TBD\n0. Exit")
 		gameChoice = input('\nChoice: ')
 
 		try: # Try to make user input an int, is used in most of the games
@@ -64,7 +64,12 @@ def main():
 			game.runGame()
 			del game
 		
-		elif gameChoice == 7: # Load/Create a save file
+		elif gameChoice == 7: # Run Blackjack
+			game = blackjack.Blackjack()
+			game.runGame()
+			del game
+
+		elif gameChoice == 8: # Load/Create a save file
 			print("TBD")
 			sleep(1)
 			# fileName = input("saveName: ")
