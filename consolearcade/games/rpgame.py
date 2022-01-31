@@ -14,7 +14,6 @@ class RPGame():
 	isAlive = True # Game still running?
 
 
-
 	def startGame(self):
 		
 		# Game setup
@@ -127,9 +126,7 @@ class RPGame():
 			# if classChoice == 1: # User has picked a class
 			# 	player.classChoice(userChoice)
 			# 	return
-			
-				
-							
+						
 	def adventure(self, player): # Main game function
 		# TODO: Add save/load
 	
