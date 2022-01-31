@@ -21,20 +21,28 @@ class Blackjack():
 
         while(self.isAlive):
             cls()
-            print("Horse's blackjack! House plays safe at 16")
+            print("Horse's blackjack! House plays safe at 16\n")
             self.displayStats(player, dealer)
 
-            uInput = input("(H)it or (S)tay? or (0) to exit: ")
+            uInput = input("1) Hit\n2) Stay\n0) Exit\n\nChoice: ")
 
-            if "h" in uInput.lower():
+            try:
+                uInput = int(uInput)
+                # isInt = True
+            except ValueError:
+                # isInt = False
+                print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+                print(color.Color.RED + "HINT: The only accepted inputs are 1, 2, and 0!" + color.Color.END)
+
+            if uInput == 1:
                 self.hit(player)
-                self.checkstats(player, dealer)
-            elif "0" or "e" or "x" in uInput.lower():
-                self.isAlive = False
-            else:
+            elif uInput == 2:
                 while sum(dealer) < 17:
                     self.hit(dealer)
                     self.checkstats(player, dealer)
+            elif uInput == 0:
+                self.isAlive = False
+
 
         # if playAgain == True, deck = [1,2,3,4,5,6,7,8,9,10,11,12,13] * 4 # 4 decks
 
@@ -80,12 +88,40 @@ class Blackjack():
         playerTotal = sum(player)
         dealerTotal = sum(dealer)
 
-        if playerTotal > 21:
-            print("Haha, gimme that money")
+        # If player score under 21 or under/equal to dealer
+        if playerTotal > 21 or playerTotal <= dealerTotal:
+            print("House wins")
+            uInput = input("Play again?\n1) Yes\n2) No\n0) Exit\n\nChoice: ")
+
+            try:
+                uInput = int(uInput)
+            except ValueError:
+                print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+                print(color.Color.RED + "HINT: The only accepted inputs are 1, 2, and 0!" + color.Color.END)
             
-        elif dealerTotal > 21:
-            print("Horse cries, busted it's hoof")
-            self.score += 1 # unused
+            if uInput == 1:
+                player = self.deal()
+                dealer = self.deal() 
+            if uInput == 2 or uInput == 0:
+                self.isAlive = False
+        
+        elif playerTotal == 21:
+            print("Player wins")
+            self.score += 1
+            uInput = input("Play again?\n1) Yes\n2) No\n0) Exit\n\nChoice: ")
+
+            try:
+                uInput = int(uInput)
+            except ValueError:
+                print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+                print(color.Color.RED + "HINT: The only accepted inputs are 1, 2, and 0!" + color.Color.END)
+            
+            if uInput == 1:
+                player = self.deal()
+                dealer = self.deal() 
+            if uInput == 2 or uInput == 0:
+                self.isAlive = False
+
         
         
 
@@ -94,4 +130,4 @@ class Blackjack():
         playerTotal = sum(player)
         dealerTotal = sum(dealer)
 
-        print(f"Player: {playerTotal}\nDealer: {dealerTotal}")
+        print(f"Player: {playerTotal}\nDealer: {dealerTotal}\n")
