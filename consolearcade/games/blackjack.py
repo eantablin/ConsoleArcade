@@ -47,7 +47,7 @@ class Blackjack():
             elif uInput == 0:
                 self.isAlive = False
             
-            player, dealer = self.checkstats(player, dealer, playerStayed)
+            player, dealer, self.deck = self.checkstats(player, dealer, self.deck, playerStayed)
 
 
         # if playAgain == True, deck = [1,2,3,4,5,6,7,8,9,10,11,12,13] * 4 # 4 decks
@@ -90,69 +90,58 @@ class Blackjack():
 
         return hand
 
-    def checkstats(self, player, dealer, playerStayed):
+    def checkstats(self, player, dealer, deck, playerStayed):
         playerTotal = sum(player)
         dealerTotal = sum(dealer)
+        uInput = ""
 
-        # If player score under 21 or under/equal to dealer
+        # Dealer win condition, should have higher odds of player cuz it won't start drawing until player is done
         if playerTotal > 21 or (playerTotal <= dealerTotal and playerStayed == True and dealerTotal < 22):
-            cls()
-            print(f"House wins\n\nPlayer: {playerTotal}\nDealer: {dealerTotal}\n")
-            uInput = input("Play again?\n1) Yes\n2) No\n0) Exit\n\nChoice: ")
 
-            try:
-                uInput = int(uInput)
-            except ValueError:
-                print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
-                print(color.Color.RED + "HINT: The only accepted inputs are 1, 2, and 0!" + color.Color.END)
+            while uInput not in [1,2,0]:
+                cls()
+                print(f"House wins\n\nPlayer: {playerTotal} | {player}\nDealer: {dealerTotal} | {dealer}\n")
+                uInput = input("Play again?\n1) Yes\n2) No\n0) Exit\n\nChoice: ")
+
+                try:
+                    uInput = int(uInput)
+                except ValueError:
+                    print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+                    print(color.Color.RED + "HINT: The only accepted inputs are 1, 2, and 0!" + color.Color.END)
+                
+                if uInput == 1:
+                    return self.deal(), self.deal(), [2,3,4,5,6,7,8,9,10,11,12,13,14] * 4
+
+                if uInput == 2 or uInput == 0:
+                    self.isAlive = False
             
-            if uInput == 1:
-                return self.deal(), self.deal()
+        # Player win conditions, higher odds of losing so try to play it safe
+        elif playerTotal == 21 or playerTotal > dealerTotal and playerStayed or playerTotal < 22 and playerStayed:
 
-            if uInput == 2 or uInput == 0:
-                self.isAlive = False
-        
-        elif playerTotal == 21:
-            cls()
-            print(f"Player wins\n\nPlayer: {playerTotal}\nDealer: {dealerTotal}\n")
-            self.score += 1
-            uInput = input("Play again?\n1) Yes\n2) No\n0) Exit\n\nChoice: ")
+            while uInput not in [1,2,0]:
+                cls()
+                print(f"Player wins\n\nPlayer: {playerTotal} | {player}\nDealer: {dealerTotal} | {dealer}\n")
+                self.score += 1
+                uInput = input("Play again?\n1) Yes\n2) No\n0) Exit\n\nChoice: ")
 
-            try:
-                uInput = int(uInput)
-            except ValueError:
-                print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
-                print(color.Color.RED + "HINT: The only accepted inputs are 1, 2, and 0!" + color.Color.END)
-            
-            if uInput == 1:
-                return self.deal(), self.deal()
+                try:
+                    uInput = int(uInput)
+                except ValueError:
+                    print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
+                    print(color.Color.RED + "HINT: The only accepted inputs are 1, 2, and 0!" + color.Color.END)
+                
+                if uInput == 1:
+                    return self.deal(), self.deal(), [2,3,4,5,6,7,8,9,10,11,12,13,14] * 4
 
-            if uInput == 2 or uInput == 0:
-                self.isAlive = False
-            
-        elif playerTotal > dealerTotal and playerStayed or playerTotal < 22 and playerStayed:
-            cls()
-            print(f"Player wins\n\nPlayer: {playerTotal}\nDealer: {dealerTotal}\n")
-            self.score += 1
-            uInput = input("Play again?\n1) Yes\n2) No\n0) Exit\n\nChoice: ")
+                if uInput == 2 or uInput == 0:
+                    self.isAlive = False
 
-            try:
-                uInput = int(uInput)
-            except ValueError:
-                print(color.Color.RED + "Invalid input, try a number instead." + color.Color.END)
-                print(color.Color.RED + "HINT: The only accepted inputs are 1, 2, and 0!" + color.Color.END)
-            
-            if uInput == 1:
-                return self.deal(), self.deal()
-
-            if uInput == 2 or uInput == 0:
-                self.isAlive = False
-
-        return player, dealer
+        return player, dealer, deck
 
 
     def displayStats(self, player, dealer):
         playerTotal = sum(player)
         dealerTotal = sum(dealer)
 
-        print(f"Player: {playerTotal}\nDealer: {dealerTotal}\n")
+        # player and dealer are there for demonstration purposes, make them prettier!
+        print(f"Player: {playerTotal} | {player}\nDealer: {dealerTotal} | {dealer}\n")
