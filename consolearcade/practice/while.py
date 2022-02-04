@@ -1,7 +1,7 @@
 isAlive = True
 x = 0
 
-while(isAlive):
+while isAlive:
     if x == 10:
         isAlive = False
     print("Hello!")

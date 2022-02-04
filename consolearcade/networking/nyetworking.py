@@ -2,19 +2,17 @@ import socket
 import socketserver
 
 
+class Server:
+    sock = socket()  # Sockets power the cloud
+    TCPserver = socketserver.TCPServer  # Gotta host the game
 
-class Server():
-    sock = socket() # Sockets power the cloud
-    TCPserver = socketserver.TCPServer # Gotta host the game
-
-
-    def initiate(self): # Called on startup
+    def initiate(self):  # Called on startup
         print("Server initialized")
         # self.TCPserver.
-        #menu() 
+        # menu()
         pass
 
-    def settings(self): # User wants control
+    def settings(self):  # User wants control
         userInput = input("Host Server(1)\nClose server(2)\nExit(0)")
 
         # Adjust so they can't write anything but what's asked
@@ -22,16 +20,16 @@ class Server():
         try:
             userInput = int(userInput)
         except:
-            print("Try again") #
-        
+            print("Try again")  #
+
         # if userInput =
-        
+
     def status(self):
         return
         # self.TCPserver.
-    
 
-class Client():
+
+class Client:
     sock = socket()
 
     def initiate(self):
