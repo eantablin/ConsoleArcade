@@ -18,6 +18,8 @@ ConsoleArcade
 
 Blackjack
 - If player hits to 21 and house is under 17, they may as well try to hit to 21
+- Add file io
+-- Make it so after certain points unlocks different things
 
 Blackjack - Possible
 - Make it so dealer tries to catch up or beat player if they reach soft cap of 17

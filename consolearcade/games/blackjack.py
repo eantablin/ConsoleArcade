@@ -50,8 +50,6 @@ class Blackjack():
             player, dealer, self.deck = self.checkstats(player, dealer, self.deck, playerStayed)
 
 
-        # if playAgain == True, deck = [1,2,3,4,5,6,7,8,9,10,11,12,13] * 4 # 4 decks
-
     def deal(self):
         hand = []
 
